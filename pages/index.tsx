@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import App from './App'
 import Head from 'next/head'
 
 const Home: NextPage = () => {
@@ -11,12 +12,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <h1>Nothing Here right Now</h1>
+        <App/>
       </main>
-
-      <footer>
-        
-      </footer>
     </div>
   )
 }
