@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import {AppBar, Box, Container, Divider, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 
+//importing different icons from material icons.
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from "@mui/icons-material/Home"
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -11,44 +11,55 @@ import CableIcon from '@mui/icons-material/Cable';
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
+//importing next useRouter class
 import { useRouter } from 'next/router';
+
+// these two lines below are used to import text of respective language
+import en from '../language/english';
+import nep from '../language/nepali';
 
 const Header = () => {
 
     const router = useRouter();
 
+    const { locale } = router; //destructing the router to find the current locale value
+    const t = locale ==='en'? en : nep ; //this line is used to set value of t as per currently selected language
+
+    //creating list of objects of menu items to be displayed in the navbar
     const menuItems = [
         {
-            name: "Home",
+            name: t.home,
             icon: <HomeIcon/>,
             path: "/"
         },
         {
-            name: "Contact",
+            name: t.contact,
             icon: <ContactPhoneIcon/>,
             path: "/contact"
         },
         {
-            name: "Products",
+            name: t.products,
             icon: <CableIcon />,
             path: "/products"
         },
         {
-            name: "Blogs",
+            name: t.blogs,
             icon: <LoginIcon />,
             path: "/blogs"
         },
         {
-            name: "FAQ",
+            name: t.faq,
             icon: <LoginIcon />,
             path: "/faq"
         }
     ]
 
-    const handleMenuClick = (path) => {
+    //if any meny icon is clicked, the path is updated and directed.
+    const handleMenuClick = (path:any) => {
         router.push(path)
     }
 
+    // creating menu so that to toogle if sidebar is open or not 
     const [menuStyle, setMenuStyle] = useState("menu1")
 
     const toggleMenuClick = () => {
@@ -63,6 +74,7 @@ const Header = () => {
             setMenuStyle("menu1");
     }
 
+    // closing the sidebar if it is opened and the window is scrolled
     globalThis?.window?.addEventListener("scroll" , ()=> {
         if(menuStyle === "menu2")
             setMenuStyle("menu1");
@@ -74,23 +86,35 @@ const Header = () => {
     //             setMenuStyle("menu1");
     //     })
     // }, []);
-    
 
+    //following functions change the value of locale if repective language is selected
+    const handleEnglish = () => {
+        router.push('/','/',{ locale: "en" })
+    }
+    const handleNepali = () => {
+        router.push('/','/',{ locale: "nep" })
+    }
+
+    //the following jsx is rendered to the website
   return (
+    // setMenuFalse is triggered if anything is clicked and closes the sidebar if it is currently opened 
     <div onClick={()=> {setMenuFalse()}}>
+        {/* div for language */}
         <div className='language'>
-            <span>English</span>
+            <span className='login mx-8'><LoginIcon />LOGIN</span>
+            <button onClick={() => handleEnglish()}>English</button>
             <span>/</span>
-            <span>नेपाली</span>
+            <button onClick={() => handleNepali()}>नेपाली</button>
         </div>
         <div className='nav-container'>
+            {/* div to show hamburger icon if the media size is mobile equivalent */}
             <div className='hamburger-icon' onClick={()=>{toggleMenuClick()}}>
                 {menuStyle==="menu1" && <ListItem button><MenuIcon fontSize='large' className='menu-icon'/></ListItem>}
                 {menuStyle==="menu2" && <ListItem button><ArrowCircleLeftIcon fontSize='large' className='menu-icon'/></ListItem>}
             </div>
 
             <div className='logo-section'>
-                Agro_tech
+                {t.title}
             </div>
             {/* <div className='nav-items'>
                 <ul>

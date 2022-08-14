@@ -38,7 +38,7 @@ body{
 }
 
 
-@media (min-width:500px) and (max-width: 800px) {
+@media (min-width:501px) and (max-width: 800px) {
     .nav-container{
         flex-direction: column;
     }
@@ -57,7 +57,7 @@ body{
 }
 
 @media (max-width: 500px){
-    .navlink{
+    .navlink, .login{
         display: none;
     }
     .language{
@@ -75,7 +75,7 @@ body{
         display:inline;
         top: 0;
         right: 0;
-        background: #rgb(111, 246, 87);
+        background: rgb(111, 246, 87);
         z-index: 100;
     }
     .menu1 {
