@@ -4,6 +4,7 @@
 export default {
     title : "Agro-Tech",
     home : "Home",
+    about: "About",
     contact : "Contact",
     products : "Products",
     blogs : "Blogs",

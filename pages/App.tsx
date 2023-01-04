@@ -1,19 +1,17 @@
 import type { NextPage } from 'next'
+import Displaybox from '../components/displaybox'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import Searchbar from '../components/searchbar'
 
 const App: NextPage = () => {
   return (
     <div>
         <Header />
         <div>
+        <Searchbar />
           <div className='top-div flex justify-around'>
-            <div className='category'>
-              category here
-            </div>
-            <div className='slider'>
-              image slider here
-            </div>
+            <Displaybox />
           </div>
           <div className='products'>
             Products here

@@ -11,6 +11,9 @@ import CableIcon from '@mui/icons-material/Cable';
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
+import Image from 'next/image';
+import logo from '../assets/img/logo.png';
+
 //importing next useRouter class
 import { useRouter } from 'next/router';
 
@@ -31,6 +34,11 @@ const Header = () => {
             name: t.home,
             icon: <HomeIcon/>,
             path: "/"
+        },
+        {
+            name: t.about,
+            icon: <ContactPhoneIcon/>,
+            path: "/about"
         },
         {
             name: t.contact,
@@ -99,52 +107,39 @@ const Header = () => {
   return (
     // setMenuFalse is triggered if anything is clicked and closes the sidebar if it is currently opened 
     <div onClick={()=> {setMenuFalse()}}>
-        {/* div for language */}
-        <div className='language'>
-            <span className='login mx-8'><LoginIcon />LOGIN</span>
-            <button onClick={() => handleEnglish()}>English</button>
-            <span>/</span>
-            <button onClick={() => handleNepali()}>नेपाली</button>
-        </div>
         <div className='nav-container'>
             {/* div to show hamburger icon if the media size is mobile equivalent */}
-            <div className='hamburger-icon' onClick={()=>{toggleMenuClick()}}>
+            {/* <div className='hamburger-icon' onClick={()=>{toggleMenuClick()}}>
                 {menuStyle==="menu1" && <ListItem button><MenuIcon fontSize='large' className='menu-icon'/></ListItem>}
                 {menuStyle==="menu2" && <ListItem button><ArrowCircleLeftIcon fontSize='large' className='menu-icon'/></ListItem>}
-            </div>
+            </div> */}
 
             <div className='logo-section'>
-                {t.title}
+                {/* {t.title} */}
+                <Image src = {logo} width={100} height={96} />
             </div>
-            {/* <div className='nav-items'>
-                <ul>
-                    <li>Home</li>
-                    <li>About Us</li>
-                    <li>Buy/Sell</li>
-                    <li>Products</li>
-                    <li>Blogs</li>
-                    <li>FAQ</li>
-                </ul>
-            </div> */}
-            <div className='navlink'>
-                {menuItems.map((nav,idx) => {
+            <div className='navdiv'>
+                <div className ='navlink'>
+                    {menuItems.map((nav,idx) => {
                         return(
                             <ListItem 
                                 key = {idx}
                                 button
                                 onClick={()=> {handleMenuClick(nav.path)}}
-                                style={ router.pathname===nav.path ? { background: "rgb(180, 240, 121)"} : {}}
+                                // style={ router.pathname===nav.path ? { background: "#ffffff"} : {}}
+                                id={ router.pathname===nav.path ? 'active-item' : 'inactive-item'}
                                 className="nav-items"
                             >
-                                <ListItemIcon className='-mr-6 p-0 text-white'>
+                                {/* <ListItemIcon className='-mr-6 p-0 text-white'>
                                     {nav.icon}
-                                </ListItemIcon>
+                                </ListItemIcon> */}
                                 <ListItemText primary={nav.name}/>
                             </ListItem>
                         )
                     })}
+                </div>
             </div>
-            <div className={menuStyle}>
+            {/* <div className={menuStyle}>
                 {menuItems.map((nav,idx) => {
                     return(
                         <ListItem 
@@ -161,10 +156,18 @@ const Header = () => {
                         </ListItem>
                     )
                 })}
+            </div> */}
+            <div>
+                <div className='language flex'>
+                    <button onClick={() => handleEnglish()}>English</button>
+                    <span>/</span>
+                    <button onClick={() => handleNepali()}>नेपाली</button>
+                </div>
+                <div>
+                    <div>Login</div>
+                    <div>Cart</div>   
+                </div>
             </div>
-        </div>
-        <div className='sidebar'>
-            
         </div>
     </div>
   )

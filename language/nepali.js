@@ -4,6 +4,7 @@
 export default {
     title : "एग्रो-टेक",
     home : "होम",
+    about: "हाम्रो बारेमा",
     contact : "सम्पर्क",
     products : "सामाग्रीहरू",
     blogs : "ब्लगहरू",
