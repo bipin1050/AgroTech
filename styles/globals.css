@@ -146,7 +146,9 @@ body{
 
 
 /* --------displayBox-------- */
-
+.displayBox{
+    display: flex;
+}
 
 /* --------footer-------- */
 

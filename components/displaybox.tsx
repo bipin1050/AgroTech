@@ -1,6 +1,6 @@
 import React from 'react'
 import { Category } from './category'
-import Slider from './slider'
+import Slider from './Slider'
 
 const Displaybox = () => {
   return (

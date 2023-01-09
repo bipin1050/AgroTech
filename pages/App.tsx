@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Displaybox from '../components/displaybox'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import Products from '../components/products'
 import Searchbar from '../components/searchbar'
 
 const App: NextPage = () => {
@@ -14,7 +15,7 @@ const App: NextPage = () => {
             <Displaybox />
           </div>
           <div className='products'>
-            Products here
+            <Products />
           </div>
 
         </div>
