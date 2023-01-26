@@ -6,6 +6,7 @@ import logo from '../assets/img/logo.png';
 
 const Login = () => {
   return (
+<<<<<<< HEAD
     <div className='login flex flex-col relative h-[100vh]'>
       <div className='text-center text-white h-1/3 pt-5 '>
       <Image src={logo} height={100} width={100} />
@@ -25,6 +26,21 @@ const Login = () => {
           <button className='mx-3 cursor-pointer border-b-2 border-cyan-700 border-dotted'>Sign Up</button>
         </div>
       </div>
+=======
+    <div>
+        <div>
+            <Image src = {logo} width={100} height={96} />
+        </div>
+        <div>
+            <h3>Uername</h3>
+            <input placeholder='username' type={"name"}/>
+            <h3>Password</h3>
+            <input placeholder='*******' type={"password"}/>
+        </div>
+        <button>Sign In</button>
+        <p>Don't have account,</p>
+        <a href='#'>Sign Up</a>
+>>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858
     </div>
   )
 }

@@ -2,9 +2,12 @@ import React from 'react'
 import Footer from './Footer'
 import Header from './Header'
 
+<<<<<<< HEAD
 import StarIcon from '@mui/icons-material/Star';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
+=======
+>>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858
 const Products = () => {
 
   const products = [
@@ -28,6 +31,7 @@ const Products = () => {
       "productRating": 3.8,
       "id": 1,
       "img": "https://urbanbazaar.com.np/wp-content/uploads/2021/04/beans.jpg"
+<<<<<<< HEAD
     },
     {
       "name": "Banda",
@@ -77,10 +81,31 @@ const Products = () => {
                 <AddShoppingCartIcon />
                 </div>
              
+=======
+    }
+  ]
+  return (
+    <div>
+      {products.map((product,idx) => {
+          return (
+            <div>
+              <div>
+                <img width={200} src={product.img} />
+              </div>
+              <div>
+                <span>{product.name}</span>
+                <span>{product.productRating}</span>
+              </div>
+              <div>
+                <p> Rs. {product.price} per unit</p>
+              </div>
+              <button>Add to Cart</button>
+>>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858
             </div>
           )
         })}
     </div>
+<<<<<<< HEAD
     </div>
     
   )
@@ -88,3 +113,9 @@ const Products = () => {
 
 export default Products
                                              
+=======
+  )
+}
+
+export default Products
+>>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858

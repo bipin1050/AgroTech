@@ -181,9 +181,12 @@ body{
 .base-bar{
     display: none;
 }
+<<<<<<< HEAD
 .login{
     background: linear-gradient(#53dd6c  50%, #ffffff 50%)
 }
+=======
+>>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858
 @media (max-width:760px) {
     .links{
         width: 70%;

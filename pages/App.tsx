@@ -9,6 +9,7 @@ const App: NextPage = () => {
   return (
     <div>
         <Header />
+<<<<<<< HEAD
        
           <div className='flex justify-end pt-3'>
         <Searchbar />
@@ -19,6 +20,14 @@ const App: NextPage = () => {
             <Displaybox />
           </div>
           <div className='products px-[5%]'>
+=======
+        <div>
+        <Searchbar />
+          <div className='top-div flex justify-around'>
+            <Displaybox />
+          </div>
+          <div className='products'>
+>>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858
             <Products />
           </div>
 
