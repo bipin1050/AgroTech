@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-
-const Slider = () => {
-  return (
-    <div>Slider</div>
-  )
-}
-
-export default Slider
-=======
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
@@ -42,4 +31,3 @@ const ImageSlider = () => {
 
 export default ImageSlider;
 
->>>>>>> f356110e54f6878cf9bcef50ad16c20a6402f858
