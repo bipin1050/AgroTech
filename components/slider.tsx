@@ -8,7 +8,7 @@ const ImageSlider = () => {
             showThumbs={false}
             showStatus={false}
             showIndicators={true}
-            infinite={true}
+            // infinite={true}
             autoPlay={true}
             interval={3000}
             useKeyboardArrows={false}
