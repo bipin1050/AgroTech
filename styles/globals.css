@@ -181,6 +181,12 @@ body{
 .base-bar{
     display: none;
 }
+<<<<<<< HEAD
+=======
+.login{
+    background: linear-gradient(#53dd6c  50%, #ffffff 50%)
+}
+>>>>>>> Amrit
 @media (max-width:760px) {
     .links{
         width: 70%;

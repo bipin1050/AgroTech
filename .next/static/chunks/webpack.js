@@ -131,7 +131,11 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	!function() {
+<<<<<<< HEAD
 /******/ 		__webpack_require__.h = function() { return "b151618aa30f094b"; }
+=======
+/******/ 		__webpack_require__.h = function() { return "ecb5aed1f41eaadd"; }
+>>>>>>> Amrit
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

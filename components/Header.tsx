@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {AppBar, Box, Container, Divider, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
+<<<<<<< HEAD
 
+=======
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+>>>>>>> Amrit
 //importing different icons from material icons.
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from "@mui/icons-material/Home"
@@ -157,15 +161,28 @@ const Header = () => {
                     )
                 })}
             </div> */}
+<<<<<<< HEAD
             <div>
                 <div className='language flex'>
+=======
+            <div className='flex flex-col'>
+                <div className='language flex py-3'>
+>>>>>>> Amrit
                     <button onClick={() => handleEnglish()}>English</button>
                     <span>/</span>
                     <button onClick={() => handleNepali()}>नेपाली</button>
                 </div>
+<<<<<<< HEAD
                 <div>
                     <div>Login</div>
                     <div>Cart</div>   
+=======
+                <div className='flex flex-row gap-5'>
+                    <div>Login</div>
+                    <div>
+                        <ShoppingCartIcon />
+                        Cart</div>   
+>>>>>>> Amrit
                 </div>
             </div>
         </div>
