@@ -28,17 +28,17 @@ const Login = () => {
     setPassword();
   }
 
-  const redirectPath = router.state?.path || "/mainpage"
-  console.log(redirectPath)
+  const redirectPath = router.state?.path || "/"
+  // console.log(redirectPath)
 
-  if(auth.loggedIn){
-      // return <Navigate to = {redirectPath} />
-    router.push('/')
-  }
+  // if(auth.loggedIn){
+  //     return <Navigate to = {redirectPath} />
+  //  router.push('/')
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(username, password)
+    console.log(username, password)
     axios.post("http://localhost:8000/user/login", {
             email: username,
             password: password
@@ -49,8 +49,9 @@ const Login = () => {
             //   icon: "success",
             //   timer: 2000
             // });
-            console.log(res);
-            auth.login(res.data);
+            // auth.setAccessToken(res.data.jwt)
+            // auth.login(res.data);
+            console.log(res.data)
             router.push('/');
             //toast.error(res.response.data.message);
         }).catch((err) => {

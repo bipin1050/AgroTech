@@ -1,12 +1,12 @@
 import React from 'react'
 import { Category } from './category'
-import ImageSlider from './slider'
+import Slider from './slider'
 
 const Displaybox = () => {
   return (
-    <div className='displayBox'>
+    <div className='flex flex-row gap-16'>
         <Category />
-        <ImageSlider />
+        <Slider />
     </div>
   )
 }

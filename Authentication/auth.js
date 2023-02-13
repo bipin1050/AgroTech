@@ -6,29 +6,32 @@ import { createContext } from "react";
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({children}) => {
-    const [accessToken,setAccessToken] = useState(null)
+    const [accessToken,setAccessToken] = useState()
     const [loggedIn, setLoggedIn] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [username, setUsername] = useState(null);
     const [role, setRole] = useState(null);
 
-    // useEffect(()=>{
-    //     axios.post("http://localhost:5000/login/checktoken", {
-    //     headers: {
-    //         'authorization': `${localStorage.getItem("accessToken")}` 
-    //     }
-    //     })
-    //     .then((res)=>{
-    //         setLoggedIn(true)
-    //         setIsLoading(false)
-    //     })
-    //     .catch((err)=>{
-    //         setIsLoading(false)
-    //     })
-    // },[])
+    useEffect(()=>{
+        console.log("From auth provider")
+        axios.post("http://localhost:8000/user/isLogin", {
+        headers: {
+            'authorization': `${localStorage.getItem("accessToken")}` 
+        }
+        })
+        .then((res)=>{
+            console.log(res)
+            setLoggedIn(true)
+            setIsLoading(false)
+        })
+        .catch((err)=>{
+            setIsLoading(false)
+        })
+    },[])
 
     const login = (data) => {
-        setAccessToken(data.accessToken)
+        console.log(data)
+        setAccessToken(data.jwt)
         setLoggedIn(true)
         setRole(data.Role)
         localStorage.setItem("accessToken", accessToken)
@@ -40,7 +43,7 @@ export const AuthProvider = ({children}) => {
         setRole(null)
         localStorage.removeItem("accessToken")
     }
-    return <AuthContext.Provider value={{accessToken, isLoading, loggedIn, setLoggedIn, login, logout}}> {children} </AuthContext.Provider>
+    return <AuthContext.Provider value={{accessToken, isLoading, loggedIn, setLoggedIn, login, logout,setAccessToken}}> {children} </AuthContext.Provider>
 }
 
 export const useAuth = () => {

@@ -1,84 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 // import Footer from './Footer'
 // import Header from './Header'
-
+import products from '../constants/Products'
 import StarIcon from '@mui/icons-material/Star';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import axios from 'axios';
-
 
 const Products = () => {
 
-  // const products = [
-  //   {
-  //     "name": "Kauli",
-  //     "price": 50,
-  //     "productRating": 3.8,
-  //     "id": 1,
-  //     "img": "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTK8nNyI5PHgrs__CwBhXbsJa_352BaHGG0MTCbKXhj2Zahv-5xIKVMQ9P34yzKWbUCQWaWVXGdZR10lRI"
-  //   },
-  //   {
-  //     "name": "Banda",
-  //     "price": 50,
-  //     "productRating": 3.8,
-  //     "id": 1,
-  //     "img": "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2022/09/Benefits-Of-Cabbage-589153824-770x533-1-650x428.jpg"
-  //   },
-  //   {
-  //     "name": "Simi",
-  //     "price": 50,
-  //     "productRating": 3.8,
-  //     "id": 1,
-  //     "img": "https://urbanbazaar.com.np/wp-content/uploads/2021/04/beans.jpg"
-  //   },
-  //   {
-  //     "name": "Banda",
-  //     "price": 50,
-  //     "productRating": 3.8,
-  //     "id": 1,
-  //     "img": "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2022/09/Benefits-Of-Cabbage-589153824-770x533-1-650x428.jpg"
-  //   },
-  //   {
-  //     "name": "Banda",
-  //     "price": 50,
-  //     "productRating": 3.8,
-  //     "id": 1,
-  //     "img": "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2022/09/Benefits-Of-Cabbage-589153824-770x533-1-650x428.jpg"
-  //   },
-  //   {
-  //     "name": "Banda",
-  //     "price": 50,
-  //     "productRating": 3.8,
-  //     "id": 1,
-  //     "img": "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2022/09/Benefits-Of-Cabbage-589153824-770x533-1-650x428.jpg"
-  //   },
-  // ]
-
-  const [products, setProducts] = useState([]);
-
-  useEffect(()=>{
-    axios.get("http://localhost:8000/plans/allPlans")
-    .then((res)=>{
-      setProducts(res.data.data)
-      console.log(res.data.data)
-    }).catch(()=>{
-        console.log("Error while fetching products form the server")
-    })
-  }, [])
-
-  // const response = await axios.get('https://my-api.com/data');
-  // const products = response.data;
-
-
+  
   return (
-    <div className='flex flex-wrap justify-center'>
-    <div className='flex flex-wrap justify-start gap-5 w-full my-5 px-16 py-10 bg-[#53dd6c]'>
+    
+    <div className='flex flex-wrap justify-start gap-10 w-full my-5 px-5 py-10 bg-primary'>
       
-      {products.map((product) => {
+      {products.map((product,idx) => {
           return (
-            <div className='flex flex-wrap w-[24%] justify-center relative rounded-2xl bg-white ease-out hover:shadow-[rgba(0,_0,_0,_0.2)_0px_60px_40px_-7px] py-5 hover:scale-110'>
+            <div className='flex flex-wrap w-[22%] justify-center relative rounded-2xl bg-white transition ease-in-out delay-350 hover:shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)]  py-5 hover:scale-110'>
               <div className='p-1 md:p-2 w-4/5 border-2 border-black  '>
-                <img className="block object-cover object-center rounded-lg h-[200px] w-full" src={"https://health.clevelandclinic.org/wp-content/uploads/sites/3/2022/09/Benefits-Of-Cabbage-589153824-770x533-1-650x428.jpg"} />
+                <img className="block object-cover object-center rounded-lg h-[200px] w-full" src={product.img} />
               </div>
               
               <div className='flex flex-col  w-4/5 p-3'>
@@ -100,7 +38,8 @@ const Products = () => {
           )
         })}
     </div>
-    </div>
+    
+    
   )
 }
 
