@@ -4,7 +4,7 @@ import Slider from './slider'
 
 const Displaybox = () => {
   return (
-    <div className='displayBox flex justify-start w-2/5'>
+    <div className='flex flex-row gap-16'>
         <Category />
         <Slider />
     </div>

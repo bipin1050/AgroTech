@@ -9,19 +9,20 @@ const App: NextPage = () => {
   return (
     <div>
         <Header />
-       
+       <div className='px-16'>
           <div className='flex justify-end pt-3'>
         <Searchbar />
 
         </div>
         <div >
-          <div className='top-div flex justify-around'>
+          <div className=''>
             <Displaybox />
           </div>
-          <div className='products px-[5%]'>
+          <div className='products'>
             <Products />
           </div>
 
+        </div>
         </div>
         <Footer />
     </div>
