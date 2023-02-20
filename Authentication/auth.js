@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Router, useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
@@ -6,23 +7,28 @@ import { createContext } from "react";
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({children}) => {
-    const [accessToken,setAccessToken] = useState()
+    const [accessToken,setAccessToken] = useState(null)
     const [loggedIn, setLoggedIn] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
-    const [username, setUsername] = useState(null);
+    const [email, setEmail] = useState(null);
     const [role, setRole] = useState(null);
+    const [name, setName] = useState(null);
+
+    // console.log(loggedIn);
 
     useEffect(()=>{
-        console.log("From auth provider")
-        axios.post("http://localhost:8000/user/isLogin", {
+        localStorage.getItem("accessToken") && axios.post("http://localhost:8000/user/isLogin", {
         headers: {
             'authorization': `${localStorage.getItem("accessToken")}` 
         }
         })
         .then((res)=>{
-            console.log(res)
-            setLoggedIn(true)
-            setIsLoading(false)
+            // console.log(res)
+            setRole(res.data.role);
+            setName(res.data.name);
+            setEmail(res.data.email);
+            setIsLoading(false);
+            setLoggedIn(true);
         })
         .catch((err)=>{
             setIsLoading(false)
@@ -30,20 +36,26 @@ export const AuthProvider = ({children}) => {
     },[])
 
     const login = (data) => {
-        console.log(data)
-        setAccessToken(data.jwt)
-        setLoggedIn(true)
-        setRole(data.Role)
-        localStorage.setItem("accessToken", accessToken)
+        // console.log(data)
+        setAccessToken(data.jwt);
+        setRole(data.role);
+        setName(data.name);
+        setEmail(data.email);
+        setLoggedIn(true);
+        localStorage.setItem("accessToken", data.jwt);
+        setIsLoading(false);
     }
 
+    const router = useRouter();
+
     const logout = () => {
-        setAccessToken(null)
-        setLoggedIn(false)
-        setRole(null)
-        localStorage.removeItem("accessToken")
+        setAccessToken(null);
+        setLoggedIn(false);
+        setRole(null);
+        setEmail(null);
+        localStorage.removeItem("accessToken");
     }
-    return <AuthContext.Provider value={{accessToken, isLoading, loggedIn, setLoggedIn, login, logout,setAccessToken}}> {children} </AuthContext.Provider>
+    return <AuthContext.Provider value={{isLoading, loggedIn, email, name, role, setLoggedIn, login, logout,setAccessToken}}> {children} </AuthContext.Provider>
 }
 
 export const useAuth = () => {

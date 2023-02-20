@@ -6,13 +6,14 @@ import axios from 'axios';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import swal from 'sweetalert';
-import {useAuth} from '../Authentication/auth'
+import {AuthProvider, useAuth} from '../Authentication/auth'
 
 const Login = () => {
 
   const auth = useAuth();
   const router = useRouter();
 
+  // console.log(auth)
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -31,14 +32,14 @@ const Login = () => {
   const redirectPath = router.state?.path || "/"
   // console.log(redirectPath)
 
-  // if(auth.loggedIn){
-  //     return <Navigate to = {redirectPath} />
-  //  router.push('/')
-  // }
+  if(auth.loggedIn){
+      // return <Navigate to = {redirectPath} />
+    router.push('/')
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(username, password)
+    // console.log(username, password)
     axios.post("http://localhost:8000/user/login", {
             email: username,
             password: password
@@ -50,8 +51,9 @@ const Login = () => {
             //   timer: 2000
             // });
             // auth.setAccessToken(res.data.jwt)
-            // auth.login(res.data);
-            console.log(res.data)
+            auth.login(res.data);
+            // console.log(res.data)
+            // console.log(auth.loggedIn, auth.role, auth.username, auth.isLoading)
             router.push('/');
             //toast.error(res.response.data.message);
         }).catch((err) => {

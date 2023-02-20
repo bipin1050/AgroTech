@@ -19,7 +19,7 @@ export const Category = () => {
       <h1 className='text-xl py-5'>Category List</h1>
         {itemList.map((item,idx) => {
           return (
-            <div >
+            <div key ={idx}>
               <li className='list-none pt-2'>
                 <ul>{item}</ul>
               </li>

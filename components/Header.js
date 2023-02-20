@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {AppBar, Box, Container, Divider, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 //importing different icons from material icons.
-import MenuIcon from '@mui/icons-material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from "@mui/icons-material/Home"
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import ReportIcon from '@mui/icons-material/Report';
+// import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+// import ReportIcon from '@mui/icons-material/Report';
 import CableIcon from '@mui/icons-material/Cable';
 import LoginIcon from '@mui/icons-material/Login';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+// import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 import Image from 'next/image';
 import logo from '../assets/img/logo.png';
@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import en from '../language/english';
 import nep from '../language/nepali';
 import Link from 'next/link';
+import { useAuth } from '../Authentication/auth';
 
 const Header = () => {
 
@@ -104,6 +105,12 @@ const Header = () => {
         router.push('/','/',{ locale: "nep" })
     }
 
+    const auth = useAuth();
+
+    const handleProfile = () => {
+        router.push('/profile')
+    }
+
     //the following jsx is rendered to the website
   return (
     // setMenuFalse is triggered if anything is clicked and closes the sidebar if it is currently opened 
@@ -166,8 +173,8 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row gap-5'>
                     <div>
-                        <Link
-                         href = '/login'> Login </Link>
+                        {!auth.loggedIn && <Link href = '/login'> Login </Link>}
+                        {auth.loggedIn && <button onClick={handleProfile}>Hello {auth.name}</button>}
                     </div>
                     <div>
                         <ShoppingCartIcon />
