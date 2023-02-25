@@ -1,8 +1,8 @@
 import App from './App'
 import Head from 'next/head'
-import { useAuth, AuthProvider } from '../Authentication/auth'
 
 const Home = () => {
+
   return (
       <div>
         <Head>

@@ -52,7 +52,7 @@ const Login = () => {
             // });
             // auth.setAccessToken(res.data.jwt)
             auth.login(res.data);
-            // console.log(res.data)
+            console.log(res.data)
             // console.log(auth.loggedIn, auth.role, auth.username, auth.isLoading)
             router.push('/');
             //toast.error(res.response.data.message);

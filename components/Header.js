@@ -174,7 +174,7 @@ const Header = () => {
                 <div className='flex flex-row gap-5'>
                     <div>
                         {!auth.loggedIn && <Link href = '/login'> Login </Link>}
-                        {auth.loggedIn && <button onClick={handleProfile}>Hello {auth.name}</button>}
+                        {auth.loggedIn && <button onClick={handleProfile}>Hi {auth.name}</button>}
                     </div>
                     <div>
                         <ShoppingCartIcon />
