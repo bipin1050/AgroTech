@@ -63,7 +63,7 @@ const Products = () => {
               </div>
                 <p className='text-md font-light'> Rs. {product.price} per unit</p>
               </div>
-              <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer hover:bg-cyan-600 click:bg-cyan-700'>
+              <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer hover:bg-cyan-600'>
                 <button className='' onClick={()=> {handleAddToCart(product._id)}}>Add to Cart <AddShoppingCartIcon /></button>
                 {/* <AddShoppingCartIcon /> */}
                 </div>
