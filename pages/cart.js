@@ -24,8 +24,17 @@ const Cart = () => {
         })
       }, [])
 
-      const handleAddToCart = () => {
-        console.log("clicked")
+      const handleRemoveFromCart = (id) => {
+        axios.post("http://localhost:8000/plans/addCart", {
+          headers: {
+            'authorization': `${localStorage.getItem("accessToken")}` 
+          },
+          productid : id
+        }).then((res) => {
+          console.log(res)
+        }).catch((err) => {
+            console.log(err)
+        })
       }
 
   return (
@@ -57,7 +66,7 @@ const Cart = () => {
                 
               </div>
               <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer'>
-                <button className='' onClick={handleAddToCart}>Remove from Cart <AddShoppingCartIcon /></button>
+                <button className='' onClick={()=> {handleRemoveFromCart(product._id)}}>Remove from Cart <AddShoppingCartIcon /></button>
                 {/* <AddShoppingCartIcon /> */}
                 </div>
              

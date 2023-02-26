@@ -426,7 +426,7 @@ export default function ProfilePage() {
                 </div>)}
                 <button onClick={handleViewProduct}> {/* button for view product*/}
                   View Entries
-                  {console.log(viewProduct)}
+                  {/* {console.log(viewProduct)} */}
                 </button>
                 {viewProduct &&
                 (
