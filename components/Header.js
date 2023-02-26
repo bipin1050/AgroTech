@@ -110,6 +110,10 @@ const Header = () => {
     const handleProfile = () => {
         router.push('/profile')
     }
+    
+    const handleCart = () => {
+        router.push('/cart')
+    }
 
     //the following jsx is rendered to the website
   return (
@@ -177,8 +181,10 @@ const Header = () => {
                         {auth.loggedIn && <button onClick={handleProfile}>Hi {auth.name}</button>}
                     </div>
                     <div>
-                        <ShoppingCartIcon />
-                        Cart
+                        <button onClick={() => handleCart()}>
+                            <ShoppingCartIcon />
+                            Cart
+                        </button>
                     </div>   
                 </div>
             </div>

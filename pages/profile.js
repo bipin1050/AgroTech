@@ -219,6 +219,9 @@ import logo from '../assets/img/logo.png'
 import { useAuth } from '../Authentication/auth';
 import Header from '../components/Header';
 
+import StarIcon from '@mui/icons-material/Star';
+
+
 export default function ProfilePage() {
 
   const [name, setName] = useState(null);
@@ -259,6 +262,8 @@ export default function ProfilePage() {
   const [viewProduct, setViewProduct] = useState(false);
   const [viewCart, setViewCart] = useState(false);
 
+  const [myProduct, setMyProduct] = useState([]);
+  const [cartProduct, setCartProduct] = useState([]);
 
 
   const handleAddProduct = () => {
@@ -275,10 +280,9 @@ export default function ProfilePage() {
       }
     })
     .then((res)=>{
-      setViewProduct(res.data.data)
+      setMyProduct(res.data.data)
       console.log(res.data.data)
     }).catch((err)=>{
-      
         // console.log("Error while fetching products form the server")
         console.log(err)
     })
@@ -327,7 +331,7 @@ export default function ProfilePage() {
   return (
     <>
       <Head>
-        <title>Profile Page | Agro App</title>
+        <title>Profile | Agro Tech</title>
         <meta name="description" content="Profile Page for Agro App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -353,7 +357,7 @@ export default function ProfilePage() {
             </section>
             <button onClick={handleLogout}>Logout</button>
 
-            {auth.role == 'retailer'
+            {auth.role
             &&
             (
               <div>
@@ -422,12 +426,40 @@ export default function ProfilePage() {
                 </div>)}
                 <button onClick={handleViewProduct}> {/* button for view product*/}
                   View Entries
+                  {console.log(viewProduct)}
                 </button>
                 {viewProduct &&
                 (
-                  <div>
-                    {viewProduct}
+                  <div className='flex flex-wrap justify-start gap-10 w-full my-5 px-5 py-10 bg-primary'>
+                    {myProduct.map((product,idx) => {
+                      return (
+                        <div key ={idx} className='flex flex-wrap w-[20%] justify-center relative rounded-2xl bg-white transition ease-in-out delay-350 hover:shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)]  py-5 hover:scale-110'>
+                          <div className='p-1 md:p-2 w-4/5 border-2 border-black  '>
+                            <img className="block object-cover object-center rounded-lg h-[200px] w-full" src={product.img} />
+                          </div>
+                          
+                          <div className='flex flex-col  w-4/5 p-3'>
+                            <span className='text-xl font-medium'>{product.name}</span>
+                            <div className='absolute right-10 rounded-2xl bg-red-600 px-2'>
+                            <span >{product.productRating}</span>
+                            <StarIcon />
+                          </div>
+                          
+                            <p className='text-md font-light'> Rs. {product.price} per unit</p>
+                            
+                          </div>
+                        </div>
+                      )
+                    })}
                   </div>
+                  // viewProduct.map((product,idx) => {
+                  //   return (
+                  //     <div>
+                  //       <h4>Name</h4>
+                  //       <span>{product.name}</span>
+                  //     </div>
+                  //   )
+                  //   })
                 )}
             </div>)}
           </div>

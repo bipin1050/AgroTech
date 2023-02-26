@@ -1,33 +1,45 @@
+import axios from 'axios';
+import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-// import Footer from './Footer'
-// import Header from './Header'
-// import products from '../constants/Products'
+import Header from '../components/Header'
 import StarIcon from '@mui/icons-material/Star';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import axios from 'axios';
 
-const Products = () => {
 
-  const [products, setProducts] = useState([]);
+const Cart = () => {
 
-  useEffect(()=>{
-    axios.get("http://localhost:8000/plans/allPlans")
-    .then((res)=>{
-      setProducts(res.data.data)
-      console.log(res.data.data)
-    }).catch(()=>{
-        console.log("Error while fetching products form the server")
-    })
-  }, [])
-  
-  const handleAddToCart = () => {
-    console.log('clicked')
-  }
+    const [cartItems, setCartItems] = useState([]);
+
+    useEffect(()=>{
+        axios.post("http://localhost:8000/plans/getCart", {
+            headers: {
+                'authorization': `${localStorage.getItem("accessToken")}` 
+            }
+        }).then((res)=>{
+          setCartItems(res.data.products)
+          console.log(res.data.products)
+        }).catch((err)=>{
+            // console.log("Error while fetching products form the server")
+            console.log(err)
+        })
+      }, [])
+
+      const handleAddToCart = () => {
+        console.log("clicked")
+      }
+
   return (
-    
-    <div className='flex flex-wrap justify-start gap-10 w-full my-5 px-5 py-10 bg-primary'>
+    <>
+      <Head>
+        <title>View Cart | AgroTech</title>
+        <meta name="description" content="Profile Page for Agro App" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Header />
       
-      {products.map((product,idx) => {
+      <main className="bg-gray-100 min-h-screen">
+      {cartItems.map((product,idx) => {
           return (
             <div key ={idx} className='flex flex-wrap w-[22%] justify-center relative rounded-2xl bg-white transition ease-in-out delay-350 hover:shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)]  py-5 hover:scale-110'>
               <div className='p-1 md:p-2 w-4/5 border-2 border-black  '>
@@ -45,18 +57,16 @@ const Products = () => {
                 
               </div>
               <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer'>
-                <button className='' onClick={handleAddToCart}>Add to Cart <AddShoppingCartIcon /></button>
+                <button className='' onClick={handleAddToCart}>Remove from Cart <AddShoppingCartIcon /></button>
                 {/* <AddShoppingCartIcon /> */}
                 </div>
              
             </div>
           )
         })}
-    </div>
-    
-    
+      </main>
+    </>
   )
 }
 
-export default Products
-                                             
+export default Cart
