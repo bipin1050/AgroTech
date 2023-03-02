@@ -9,6 +9,8 @@ import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 // import ReportIcon from '@mui/icons-material/Report';
 import CableIcon from '@mui/icons-material/Cable';
 import LoginIcon from '@mui/icons-material/Login';
+import Badge from '@mui/material/Badge';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 // import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 import Image from 'next/image';
@@ -176,6 +178,13 @@ const Header = () => {
                     <button onClick={() => handleNepali()}>नेपाली</button>
                 </div>
                 <div className='flex flex-row gap-5'>
+                    <div>
+                        <button>
+                            <Badge badgeContent={5} color="secondary" overlap="circular">
+                                <NotificationsIcon />
+                            </Badge>
+                        </button>
+                    </div>
                     <div>
                         {!auth.loggedIn && <Link href = '/login'> Login </Link>}
                         {auth.loggedIn && <button onClick={handleProfile}>Hi {auth.name}</button>}

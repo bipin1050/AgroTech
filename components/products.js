@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 // import Footer from './Footer'
 // import Header from './Header'
 // import products from '../constants/Products'
-import StarIcon from '@mui/icons-material/Star';
+import StarSharpIcon from '@mui/icons-material/StarSharp';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios';
 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import Router, { useRouter } from 'next/router';
 
 const Products = () => {
 
@@ -15,12 +16,14 @@ const Products = () => {
   const [pageNo, setPageNo] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
+  const router = useRouter();
+
   useEffect(()=>{
     axios.get(`http://localhost:8000/plans/allPlans/${pageNo}`)
     .then((res)=>{
       setProducts(res.data.data)
       setPageCount(Math.ceil(res.data.totalcount))
-      // console.log(res.data)
+      console.log(res.data)
     }).catch(()=>{
         console.log("Error while fetching products form the server")
     })
@@ -39,6 +42,14 @@ const Products = () => {
     })
   }
 
+  const handleProductDetails = (id) => {
+    // router.push(`/products/${id}`)
+    router.push({
+      pathname: `/products/${id}`,
+      query: { id: id }
+  })
+  }
+
   const handlePrevPage = () => {
     setPageNo(pageNo-1)
   }
@@ -47,26 +58,30 @@ const Products = () => {
   }
   return (
   <>
-    <div className='flex flex-wrap justify-start gap-10 w-full my-5 px-5 py-10 bg-primary'>
+    <div className='flex flex-wrap justify-around gap-5 w-full my-5 p-5 bg-primary rounded-md overflow-hidden'>
       {products.map((product,idx) => {
           return (
-            <div key ={idx} className='flex flex-wrap w-[22%] justify-center relative rounded-2xl bg-white transition ease-in-out delay-350 hover:shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)]  py-5 hover:scale-110'>
-              <div className='p-1 md:p-2 w-4/5 border-2 border-black  '>
-                <img className="block object-cover object-center rounded-lg h-[200px] w-full" src={product.img} />
+            <div key ={idx} onClick = {()=> {handleProductDetails(product._id)}} className='flex flex-wrap w-[18%] justify-center relative rounded-md bg-[#EFEFEF] transition ease-in-out delay-350 hover:shadow-[0px_1px_3px_1px_rgba(0,0,0,0.65)] py-2'>
+              <div className='p-1 w-full'>
+                <img className="block object-cover object-center rounded-lg h-[150px] w-full" src={product.img} />
               </div>
               
-              <div className='flex flex-col  w-4/5 p-3'>
+              <div className='flex flex-col justify-between w-full p-3'>
                 <span className='text-xl font-medium'>{product.name}</span>
-                <div className='absolute right-10 rounded-2xl bg-red-600 px-2'>
-                <span >{product.productRating}</span>
-                <StarIcon />
-              </div>
-                <p className='text-md font-light'> Rs. {product.price} per unit</p>
-              </div>
-              <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer hover:bg-cyan-600'>
-                <button className='' onClick={()=> {handleAddToCart(product._id)}}>Add to Cart <AddShoppingCartIcon /></button>
-                {/* <AddShoppingCartIcon /> */}
+                <div className='absolute right-2 rounded-md bg-[#fff] px-2'>
+                  <span >{product.ratingsAverage}</span>
+                  <StarSharpIcon style={{ color: 'yellow' }}/>
                 </div>
+                <p className='text-md font-light'> Rs. {product.price*(100-product.discount)/100} per unit</p>
+                <div className='flex flex-row text-gray-400' >
+                  <p className='line-through'>{product.price}</p>
+                  <p className='px-2'>-{product.discount}%</p>
+                </div>
+              </div>
+              {/* <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer hover:bg-cyan-600'>
+                <button className='' onClick={()=> {handleAddToCart(product._id)}}>Add to Cart <AddShoppingCartIcon /></button>
+                 <AddShoppingCartIcon /> 
+              </div> */}
             </div>
           )
         })}
