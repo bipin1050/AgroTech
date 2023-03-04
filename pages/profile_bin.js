@@ -254,9 +254,9 @@ export default function ProfilePage() {
       router.push('/');
       console.log('oushed')
   }
-  if(!auth.loggedIn){
-    router.push('/')
-  }
+  // if(!auth.loggedIn){
+  //   router.push('/')
+  // }
 
   const [addProduct, setAddProduct] = useState(false);
   const [viewProduct, setViewProduct] = useState(false);
