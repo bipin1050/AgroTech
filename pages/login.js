@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-
 import Image from 'next/image';
 import logo from '../assets/img/logo1.png';
 import axios from 'axios';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import swal from 'sweetalert';
-import {AuthProvider, useAuth} from '../Authentication/auth'
+import { useAuth} from '../Authentication/auth';
+import { toast } from 'react-toastify';
+
 
 const Login = () => {
 
@@ -45,19 +46,20 @@ const Login = () => {
             password: password
         }).then((res) => {
             handleClearInput();
-            // swal({
-            //   title: "Logged In",
-            //   icon: "success",
-            //   timer: 2000
-            // });
+            swal({
+              title: "Logged In",
+              icon: "success",
+              timer: 2000
+            });
             // auth.setAccessToken(res.data.jwt)
             auth.login(res.data);
             console.log(res.data)
             // console.log(auth.loggedIn, auth.role, auth.username, auth.isLoading)
             router.push('/');
-            //toast.error(res.response.data.message);
+            // toast.error("res.response.data.message");
         }).catch((err) => {
             console.log(err)
+            toast.error(err.response?.data?.message || err.message)
         })
   }
 

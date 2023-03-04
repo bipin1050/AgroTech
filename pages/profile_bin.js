@@ -263,7 +263,6 @@ export default function ProfilePage() {
   const [viewCart, setViewCart] = useState(false);
 
   const [myProduct, setMyProduct] = useState([]);
-  const [cartProduct, setCartProduct] = useState([]);
 
 
   const handleAddProduct = () => {
@@ -292,7 +291,7 @@ export default function ProfilePage() {
     viewCart ? setViewCart(false) : setViewCart(true)
   }
 
-  const [newProduct, setNewProduct] = useState({ name: "", duration: "", price: "", discount:"", description : ""});
+  const [newProduct, setNewProduct] = useState({ name: "", duration: "",quantity:"",unit: "", price: "", discount:"", description : ""});
   
   const handleChange = e => {
       const { name, value } = e.target;
@@ -312,6 +311,8 @@ export default function ProfilePage() {
       },
       name : newProduct.name,
       duration : newProduct.duration,
+      quantity : newProduct.quantity,
+      unit : newProduct.unit,
       price : newProduct.price,
       discount : newProduct.discount,
       description : newProduct.description
@@ -357,21 +358,6 @@ export default function ProfilePage() {
             </section>
             <button onClick={handleLogout}>Logout</button>
 
-            {auth.role
-            &&
-            (
-              <div>
-                <button onClick={handleViewCart}> {/* button for add product*/}
-                  View Cart
-                </button>
-                {viewCart &&(
-                  <div>
-                    Cart Viewed
-                  </div>
-                )}  
-              </div>
-            )}
-
             {auth.role == 'farmer' 
             && 
             (<div  className=''> {/* div to add product in the farmer list*/}
@@ -405,6 +391,21 @@ export default function ProfilePage() {
                         onChange={handleChange}
                         name="price"
                       />
+                      <li>Quantity</li>
+                    <input
+                        value={newProduct.quantity}
+                        placeholder = {'350'}
+                        type="text"
+                        onChange={handleChange}
+                        name="quantity"
+                      />
+                    <select id="makedef" name='unit' defaultValue={'DEFAULT'} onChange={handleChange} className="w-52 text-sm pl-1 mb-4 text-gray-400 py-1   border-2 focus:outline-none focus-within:border-blue-500 rounded-md">
+                      <option value="DEFAULT" disabled className='text-gray-400'>Select Unit</option>
+                      <option value="KG">KG</option>
+                      <option value="litre">Litre</option>
+                      <option value="piece">Piece</option>
+                      <option value="dozen">Dozen</option>
+                    </select>
                     <li>Discount</li>
                     <input
                         value={newProduct.discount}

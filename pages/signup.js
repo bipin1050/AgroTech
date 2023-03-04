@@ -15,7 +15,9 @@ const Signup = () => {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const [role, setRole] = useState();
-
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  
 
   const router = useRouter();
 
@@ -36,7 +38,7 @@ const Signup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(name, email, password, role)
+    console.log(name, email, password, role, latitude, longitude)
     if (password === confirmPassword) {
         if (password.length < 8) {
             // toast("Password too short !")\
@@ -47,7 +49,9 @@ const Signup = () => {
                 name: name,
                 email: email,
                 password: password,
-                role: role
+                role: role,
+                latitude: latitude,
+                longitude: longitude
             }).then((res) => {
                 swal({
                     title: "User created successfully",
@@ -74,6 +78,20 @@ const Signup = () => {
 //     event.preventDefault();
 //     console.log('first')
 // }
+
+  const handleLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+    console.log(latitude, longitude)
+  }
+  
+  function showPosition(position) {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  }
 
   return (
     <div className='login flex flex-col gap-5 relative h-[100vh] '>
@@ -108,6 +126,9 @@ const Signup = () => {
           <option>retailer</option>
           <option>farmer</option>
         </select>
+
+        <label>AgroTech wants your Location</label>
+        <button type='button' onClick={handleLocation} className='bg-blue-500 rounded-md my-5 items-center'>Click to Allow</button>
         
         <button type="submit" className="transition duration-200 bg-[#3E9B05] hover:bg-[#3E8B05] focus:bg-[#3E9B05] focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             <span className="inline-block mr-2">Signup</span>

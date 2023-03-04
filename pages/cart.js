@@ -25,11 +25,10 @@ const Cart = () => {
       }, [])
 
       const handleRemoveFromCart = (id) => {
-        axios.post("http://localhost:8000/plans/addCart", {
+        axios.post(`http://localhost:8000/plans/deleteCart/${id}`, {
           headers: {
             'authorization': `${localStorage.getItem("accessToken")}` 
-          },
-          productid : id
+         } 
         }).then((res) => {
           console.log(res)
         }).catch((err) => {
