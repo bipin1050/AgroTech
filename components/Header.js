@@ -117,6 +117,10 @@ const Header = () => {
         router.push('/cart')
     }
 
+    const handleNotification = () => {
+        router.push('/notification')
+    }
+
     //the following jsx is rendered to the website
   return (
     // setMenuFalse is triggered if anything is clicked and closes the sidebar if it is currently opened 
@@ -179,7 +183,7 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row gap-5'>
                     <div>
-                        <button>
+                        <button onClick={handleNotification}>
                             <Badge badgeContent={5} color="secondary" overlap="circular">
                                 <NotificationsIcon />
                             </Badge>

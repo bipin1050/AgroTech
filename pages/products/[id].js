@@ -123,6 +123,7 @@ const ProductDetails = () => {
             <div>
                 <h1>Confirm Your Credentials</h1>
                 <h3>Email : {auth.email}</h3>
+                <h3>Location: Will update on next working days</h3>
             </div>
         }
         <div>
