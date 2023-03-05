@@ -10,28 +10,10 @@ import Header from "../components/Header";
 import StarIcon from "@mui/icons-material/Star";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import swal from "sweetalert";
+import { toast } from "react-toastify";
 
 export default function ProfilePage() {
-  // const [name, setName] = useState(null);
-  // const [role, setRole] = useState(null);
-  // const [email, setEmail] = useState(null);
-
-  // useEffect(()=>{
-  //   localStorage.getItem("accessToken") && axios.post("http://localhost:8000/user/isLogin", {
-  //   headers: {
-  //       'authorization': `${localStorage.getItem("accessToken")}`
-  //   }
-  //   })
-  //   .then((res)=>{
-  //       // console.log(res)
-  //       setEmail(res.data.email);
-  //       setName(res.data.name);
-  //       setRole(res.data.role)
-  //   })
-  //   .catch((err)=>{
-
-  //   })
-  // },[])
 
   const auth = useAuth();
   const router = useRouter();
@@ -70,7 +52,6 @@ export default function ProfilePage() {
           console.log(res.data.data);
         })
         .catch((err) => {
-          // console.log("Error while fetching products form the server")
           console.log(err);
         });
   };
@@ -114,15 +95,21 @@ export default function ProfilePage() {
         description: newProduct.description,
       })
       .then(() => {
-        // console.log('data sent')
-        newProduct.name = "";
-        newProduct.duration = "";
-        newProduct.price = "";
-        newProduct.discount = "";
-        newProduct.description = "";
+        setNewProduct((newProduct) => ({
+          ...newProduct,
+          name: "",
+          duration: "",
+          quantity: "",
+          unit: "",
+          price: "",
+          discount: "",
+          description: "",
+        }));
+        toast("Item added successfully");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
+        toast.error(err.response?.data?.message || err.message);
       });
     // console.log(newProduct)
   };
