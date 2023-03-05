@@ -142,12 +142,12 @@ export default function ProfilePage() {
           <div className="bg-primary my-10 rounded-md  flex flex-col justify-center items-center">
             <div className="flex flex-row justify-center gap-16 mt-10 pb-5 border-b border-black">
               <div className="rounded-full h-52 w-52 ">
-                <Image
-                  src={profile_picture}
+                <img
+                  src={'http://localhost:8000/images/img.jpg'}
                   alt="User Profile Picture"
                   width={200}
                   height={200}
-                  className="rounded-full"
+                  className="rounded-full aspect-square"
                 />
               </div>
               <div className="bg-white rounded-xl p-5 h-[223px] w-[701px] flex justify-start items-center">
