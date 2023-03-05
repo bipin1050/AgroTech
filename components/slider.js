@@ -18,12 +18,16 @@ const ImageSlider = () => {
            
             className={'custom-class w-full h-[400px] '}>
                 {products.map((product,idx) => {
-                    return(
-                    <div key ={idx} className='h-2/3'>
-                        <img src={product.img} className="h-[400px] rounded-2xl" alt='image1' />
-                    </div>
-
-                )})}
+                    return (
+                      <div key={idx} className="h-2/3">
+                        <img
+                          src={product.img}
+                          className="h-[400px] rounded-2xl"
+                          style={{ width: "auto" }}
+                          alt="image1"
+                        />
+                      </div>
+                    );})}
         </Carousel>
         </div>
     );
