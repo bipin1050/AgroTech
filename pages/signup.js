@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import Image from 'next/image';
-import logo from '../assets/img/logo.png';
+import logo from '../assets/img/logo1.png';
 import axios from 'axios';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
@@ -94,11 +94,11 @@ const Signup = () => {
   }
 
   return (
-    <div className='login flex flex-col relative h-[100vh]'>
-      <div className='text-center text-white h-1/3 pt-5 '>
-      <Image src={logo} height={100} width={100} />
+    <div className='login flex flex-col gap-5 relative h-[100vh] '>
+      <div className='text-center text-white  pt-5'>
+        <Image src={logo} height={150} width={150} />
       </div>
-      <form onSubmit={handleSubmit} className=" px-5 py-10 bg-slate-300 mx-auto border-2 w-1/4 h-1/2 rounded-2xl">
+      <form onSubmit={handleSubmit} className=" px-5 py-10 bg-slate-300 mx-auto border-2 w-1/5 h-fit rounded-2xl">
         
         <label className="font-semibold text-sm text-gray-600 pb-1 block py-5">Full Name</label>
         <input type="text" onChange={handleName} className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
@@ -130,14 +130,14 @@ const Signup = () => {
         <label>AgroTech wants your Location</label>
         <button type='button' onClick={handleLocation} className='bg-blue-500 rounded-md my-5 items-center'>Click to Allow</button>
         
-        <button type="submit" className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+        <button type="submit" className="transition duration-200 bg-[#3E9B05] hover:bg-[#3E8B05] focus:bg-[#3E9B05] focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             <span className="inline-block mr-2">Signup</span>
         </button>
 
 
         <div className='flex flex-row py-10'>
-          <span>Already have an account,</span>
-          <Link href='/login' className='mx-3 cursor-pointer border-b-2 border-cyan-700 border-dotted'>Login</Link>
+          <span>Already have an account ?</span>
+          <Link href='/login' ><span className='mx-1 cursor-pointer border-b-2 border-[#3E9B05]'>Login</span></Link>
         </div>
       </form>
     </div>

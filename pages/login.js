@@ -65,10 +65,10 @@ const Login = () => {
 
   return (
     <div className='login flex flex-col relative h-[100vh]'>
-      <div className='text-center text-white h-1/3 pt-5'>
+      <div className='text-center text-white h-1/4 pt-5'>
         <Image src={logo} height={150} width={150} />
       </div>
-      <form onSubmit={handleSubmit} className=" px-5 py-10 bg-slate-300 mx-auto border-2 w-1/4 h-1/2 rounded-2xl">
+      <form onSubmit={handleSubmit} className=" px-5 py-10 bg-slate-300 mx-auto border-2 w-1/5 h-1/2 rounded-2xl">
         
         <label className="font-semibold text-sm text-gray-600 pb-1 block py-5">Username</label>
         <input type="text" onChange={handleUsername} className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
@@ -77,9 +77,9 @@ const Login = () => {
         <button type="submit" className="transition duration-200 bg-[#3E9B05] hover:bg-[#3E8B05] focus:bg-[#3E9B05] focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             <span className="inline-block mr-2">Login</span>
         </button>
-        <div className='flex flex-row py-10'>
-          <span>Do not have an account,</span>
-          <Link href='/signup' className='mx-3 cursor-pointer border-b-2 border-cyan-700 border-dotted'>Sign Up</Link>
+        <div className='py-10'>
+          <span>Do not have an account ?</span>
+          <Link href='/signup' ><span className='mx-1 cursor-pointer border-b-2 border-[#3E9B05] '>Sign Up</span></Link>
         </div>
       </form>
     </div>

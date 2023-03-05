@@ -42,9 +42,9 @@ export default function ProfilePage() {
       router.push('/');
       console.log('pushed')
   }
-  if(!auth.loggedIn){
-    router.push('/')
-  }
+  // if(!auth.loggedIn){
+  //   router.push('/')
+  // }
 
   const [addProduct, setAddProduct] = useState(false);
   const [viewProduct, setViewProduct] = useState(false);
