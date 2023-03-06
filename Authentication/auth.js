@@ -17,22 +17,48 @@ export const AuthProvider = ({children}) => {
     // console.log(loggedIn);
 
     useEffect(()=>{
-        localStorage.getItem("accessToken") && axios.post("http://localhost:8000/user/isLogin", {
-        headers: {
-            'authorization': `${localStorage.getItem("accessToken")}` 
+        // localStorage.getItem("accessToken") && axios.post("http://localhost:8000/user/isLogin", {
+        // headers: {
+        //     'authorization': `${localStorage.getItem("accessToken")}` 
+        // }
+        // })
+        // .then((res)=>{
+        //     // console.log(res)
+        //     setRole(res.data.role);
+        //     setName(res.data.name);
+        //     setEmail(res.data.email);
+        //     setIsLoading(false);
+        //     setLoggedIn(true);
+        // })
+        // .catch((err)=>{
+        //     setIsLoading(false)
+        // })
+
+        async function getProfile(){
+             try {
+               let res = await axios.post(
+                 "http://localhost:8000/user/isLogin",
+                 {
+                   headers: {
+                     authorization: `${localStorage.getItem("accessToken")}`,
+                   },
+                 }
+               );
+               if (res) {
+                 setRole(res.data.role);
+                 setName(res.data.name);
+                 setEmail(res.data.email);
+                 setIsLoading(false);
+                 setLoggedIn(true);
+               }
+             } catch {
+                setIsLoading(false);
+             }
         }
-        })
-        .then((res)=>{
-            // console.log(res)
-            setRole(res.data.role);
-            setName(res.data.name);
-            setEmail(res.data.email);
-            setIsLoading(false);
-            setLoggedIn(true);
-        })
-        .catch((err)=>{
-            setIsLoading(false)
-        })
+
+        if(localStorage.getItem("accessToken")){
+           getProfile();
+        }
     },[])
 
     const login = (data) => {

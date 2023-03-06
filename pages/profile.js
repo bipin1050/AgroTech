@@ -1,20 +1,18 @@
 import axios from "axios";
 import Head from "next/head";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import profile_picture from "../assets/img/profile.png";
 import { useAuth } from "../Authentication/auth";
 import Header from "../components/Header";
 
-import StarIcon from "@mui/icons-material/Star";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 
 export default function ProfilePage() {
-
   const auth = useAuth();
   const router = useRouter();
 
@@ -37,23 +35,34 @@ export default function ProfilePage() {
     addProduct ? setAddProduct(false) : setAddProduct(true);
   };
 
+  // async function getProduct() {
+  //     let res = await axios.post("http://localhost:8000/plans/crudPlan/farmer", {
+  //       headers: {
+  //         authorization: `${localStorage.getItem("accessToken")}`
+  //       }
+  //     })
+  //     .then((res) => res.json())
+  //     .then(data => {
+  //       console.log(res)
+  //     })
+  // }
+
   const handleViewProduct = () => {
     viewProduct ? setViewProduct(false) : setViewProduct(true);
-
-    viewProduct &&
-      axios
-        .post("http://localhost:8000/plans/crudPlan/farmer", {
-          headers: {
-            authorization: `${localStorage.getItem("accessToken")}`,
-          },
-        })
-        .then((res) => {
-          setMyProduct(res.data.data);
-          console.log(res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    viewProduct && 
+    axios
+      .post("http://localhost:8000/plans/crudPlan/farmer", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        setMyProduct(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleViewCart = () => {
@@ -64,10 +73,12 @@ export default function ProfilePage() {
     name: "",
     duration: "",
     quantity: "",
+    category: "",
     unit: "",
     price: "",
     discount: "",
     description: "",
+    image: "",
   });
 
   const handleChange = (e) => {
@@ -78,23 +89,36 @@ export default function ProfilePage() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    setNewProduct((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.files[0],
+    }));
+  };
+
   const handleSubmitProduct = (event) => {
     event.preventDefault();
+
     console.log(newProduct);
+    const formData = new FormData();
+    formData.append("name", newProduct.name);
+    formData.append("category", newProduct.category);
+    formData.append("duration", newProduct.duration);
+    formData.append("price", newProduct.price);
+    formData.append("quantity", newProduct.quantity);
+    formData.append("unit", newProduct.unit);
+    formData.append("discount", newProduct.discount);
+    formData.append("description", newProduct.description);
+    formData.append("image", newProduct.image);
+
     axios
-      .post("http://localhost:8000/plans/crudPlan", {
+      .post("http://localhost:8000/plans/crudPlan",formData, {
         headers: {
           authorization: `${localStorage.getItem("accessToken")}`,
         },
-        name: newProduct.name,
-        duration: newProduct.duration,
-        quantity: newProduct.quantity,
-        unit: newProduct.unit,
-        price: newProduct.price,
-        discount: newProduct.discount,
-        description: newProduct.description,
       })
       .then(() => {
+        // console.log("success")
         setNewProduct((newProduct) => ({
           ...newProduct,
           name: "",
@@ -108,10 +132,40 @@ export default function ProfilePage() {
         toast("Item added successfully");
       })
       .catch((err) => {
-        // console.log(err);
+        // console.log(err)
         toast.error(err.response?.data?.message || err.message);
       });
-    // console.log(newProduct)
+
+    // axios
+    //   .post("http://localhost:8000/plans/crudPlan", {
+    //     headers: {
+    //       authorization: `${localStorage.getItem("accessToken")}`,
+    //     },
+    //     name: newProduct.name,
+    //     duration: newProduct.duration,
+    //     quantity: newProduct.quantity,
+    //     unit: newProduct.unit,
+    //     price: newProduct.price,
+    //     discount: newProduct.discount,
+    //     description: newProduct.description,
+    //   })
+    //   .then(() => {
+    //     setNewProduct((newProduct) => ({
+    //       ...newProduct,
+    //       name: "",
+    //       duration: "",
+    //       quantity: "",
+    //       unit: "",
+    //       price: "",
+    //       discount: "",
+    //       description: "",
+    //     }));
+    //     toast("Item added successfully");
+    //   })
+    //   .catch((err) => {
+    //     // console.log(err);
+    //     toast.error(err.response?.data?.message || err.message);
+    //   });
   };
 
   return (
@@ -130,7 +184,7 @@ export default function ProfilePage() {
             <div className="flex flex-row justify-center gap-16 mt-10 pb-5 border-b border-black">
               <div className="rounded-full h-52 w-52 ">
                 <img
-                  src={'http://localhost:8000/images/img.jpg'}
+                  src={profile_picture}
                   alt="User Profile Picture"
                   width={200}
                   height={200}
@@ -185,6 +239,17 @@ export default function ProfilePage() {
                           type="text"
                           onChange={handleChange}
                           name="name"
+                          className="bg-gray-200 rounded-md w-2/3 "
+                        />
+                      </div>
+                      <div className="flex flex-col lg:flex-row  w-full">
+                        <label className="w-1/3">Category</label>
+                        <input
+                          value={newProduct.category}
+                          placeholder={"fruits"}
+                          type="text"
+                          onChange={handleChange}
+                          name="category"
                           className="bg-gray-200 rounded-md w-2/3 "
                         />
                       </div>
@@ -263,6 +328,17 @@ export default function ProfilePage() {
                           onChange={handleChange}
                           name="description"
                           className="bg-gray-200 rounded-md w-2/3 "
+                        />
+                      </div>
+
+                      <div className="flex flex-col lg:flex-row  w-full">
+                        <label className="w-1/3">Product Image</label>
+                        <input
+                          type="file"
+                          name="image"
+                          accept="image/*"
+                          className="w-2/3 "
+                          onChange={handleImageChange}
                         />
                       </div>
 
