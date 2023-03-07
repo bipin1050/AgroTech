@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react'
 // import Header from './Header'
 // import products from '../constants/Products'
 import StarSharpIcon from '@mui/icons-material/StarSharp';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios';
 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 const Products = () => {
 
@@ -29,18 +28,18 @@ const Products = () => {
     })
   }, [pageNo])
   
-  const handleAddToCart = (id) => {
-    axios.post("http://localhost:8000/plans/addCart", {
-      headers: {
-        'authorization': `${localStorage.getItem("accessToken")}` 
-      },
-      productid : id
-    }).then((res) => {
-      console.log(res)
-    }).catch((err) => {
-        console.log(err)
-    })
-  }
+  // const handleAddToCart = (id) => {
+  //   axios.post("http://localhost:8000/plans/addCart", {
+  //     headers: {
+  //       'authorization': `${localStorage.getItem("accessToken")}` 
+  //     },
+  //     productid : id
+  //   }).then((res) => {
+  //     console.log(res)
+  //   }).catch((err) => {
+  //       console.log(err)
+  //   })
+  // }
 
   const handleProductDetails = (id) => {
     // router.push(`/products/${id}`)
@@ -66,7 +65,8 @@ const Products = () => {
               onClick={() => {
                 handleProductDetails(product._id);
               }}
-              className="flex flex-wrap w-[18%] justify-center relative rounded-md bg-[#EFEFEF] transition ease-in-out delay-350 hover:shadow-[0px_1px_3px_1px_rgba(0,0,0,0.65)] py-2">
+              className="flex flex-wrap w-[18%] justify-center relative rounded-md bg-[#EFEFEF] transition ease-in-out delay-350 hover:shadow-[0px_1px_3px_1px_rgba(0,0,0,0.65)] py-2"
+            >
               <div className="p-1 w-full">
                 <img
                   className="block object-cover object-center rounded-lg h-[150px] w-full"

@@ -47,31 +47,46 @@ const Cart = () => {
       <Header />
       
       <main className="bg-gray-100 min-h-screen">
-      {cartItems.map((product,idx) => {
+      {cartItems ? cartItems.map((product,idx) => {
           return (
-            <div key ={idx} className='flex flex-wrap w-[22%] justify-center relative rounded-2xl bg-white transition ease-in-out delay-350 hover:shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)]  py-5 hover:scale-110'>
-              <div className='p-1 md:p-2 w-4/5 border-2 border-black  '>
-                <img className="block object-cover object-center rounded-lg h-[200px] w-full" src={product.img} />
+            <div
+              key={idx}
+              className="flex flex-wrap w-[22%] justify-center relative rounded-2xl bg-white transition ease-in-out delay-350 hover:shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)]  py-5 hover:scale-110">
+              <div className="p-1 md:p-2 w-4/5 border-2 border-black  ">
+                <img
+                  className="block object-cover object-center rounded-lg h-[200px] w-full"
+                  src={`http://localhost:8000/images/${product.image}`}
+                />
               </div>
-              
-              <div className='flex flex-col  w-4/5 p-3'>
-                <span className='text-xl font-medium'>{product.name}</span>
-                <div className='absolute right-10 rounded-2xl bg-red-600 px-2'>
-                <span >{product.productRating}</span>
-                <StarIcon />
-              </div>
-              
-                <p className='text-md font-light'> Rs. {product.price} per unit</p>
-                
-              </div>
-              <div className='flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer'>
-                <button className='' onClick={()=> {handleRemoveFromCart(product._id)}}>Remove from Cart <AddShoppingCartIcon /></button>
-                {/* <AddShoppingCartIcon /> */}
+
+              <div className="flex flex-col  w-4/5 p-3">
+                <span className="text-xl font-medium">{product.name}</span>
+                <div className="absolute right-10 rounded-2xl bg-red-600 px-2">
+                  <span>{product.productRating}</span>
+                  <StarIcon />
                 </div>
-             
+
+                <p className="text-md font-light">
+                  {" "}
+                  Rs. {product.price} per unit
+                </p>
+              </div>
+              <div className="flex flex-row justify-center gap-3 rounded-3xl bg-cyan-500 p-3 cursor-pointer">
+                <button
+                  className=""
+                  onClick={() => {
+                    handleRemoveFromCart(product._id);
+                  }}>
+                  Remove from Cart <AddShoppingCartIcon />
+                </button>
+                {/* <AddShoppingCartIcon /> */}
+              </div>
             </div>
-          )
-        })}
+          );
+        })
+        :
+        <div>No Items in the list</div>
+        }
       </main>
     </>
   )
