@@ -123,7 +123,7 @@ const Signup = () => {
           <option value="DEFAULT" disabled >
             Select Role
           </option>
-          <option>retailer</option>
+          <option>retailer/wholeseller</option>
           <option>farmer</option>
         </select>
 
