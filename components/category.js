@@ -1,31 +1,37 @@
-import React from 'react'
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 
 export const Category = () => {
 
-  const itemList = [
-    "fruits",
-    "vegetable",
-    "agriItems",
-    'category 1',
-    'category 2',
-    'category 3',
-    'category 4',
-    'category 5',
-  ]
+  const router = useRouter();
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:8000/plans/getCategory").then((res) => {
+      console.log(res.data.data);
+      setCategory(res.data.data);
+    });
+  }, []);
 
+  const handleCategory = (category) => {
+    router.push({
+      pathname: `/category`,
+      query: {category: category},
+    });
+  }
 
   return (
-    <div className='bg-primary flex flex-col w-1/4 rounded-2xl px-10'  >
-      <h1 className='text-xl py-5'>Category List</h1>
-        {itemList.map((item,idx) => {
-          return (
-            <div key ={idx}>
-              <li className='list-none pt-2'>
-                <ul>{item}</ul>
-              </li>
-            </div>
-          )
-        })}
+    <div className="bg-primary flex flex-col w-1/4 rounded-2xl px-10">
+      <h1 className="text-xl py-5">Category List</h1>
+      {category.map((item, idx) => {
+        return (
+          <div className="pt-2">
+            <h3 onClick={()=>{handleCategory(item.name)}}>{item.name}</h3>
+          </div>
+        );
+      })}
+      {/* {category} */}
     </div>
-  )
-}
+  );
+};

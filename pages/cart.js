@@ -4,9 +4,20 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import StarIcon from '@mui/icons-material/Star';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useAuth } from '../Authentication/auth';
+import { useRouter } from 'next/router';
 
 
 const Cart = () => {
+
+  const auth = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!auth.loggedIn) {
+      router.push("/login");
+    }
+  }, []);
 
     const [cartItems, setCartItems] = useState([]);
 

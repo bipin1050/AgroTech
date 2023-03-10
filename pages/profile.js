@@ -2,7 +2,7 @@ import axios from "axios";
 import Head from "next/head";
 // import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import profile_picture from "../assets/img/profile.png";
 import { useAuth } from "../Authentication/auth";
 import Header from "../components/Header";
@@ -16,107 +16,113 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 
+import Select from "react-select";
+
 export default function ProfilePage() {
   const auth = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!auth.isLoding && !auth.loggedIn) {
+      router.push("/login");
+    }
+  }, []);
+
+  const [productList, setProductList] = useState([]);
+
   const handleLogout = () => {
     auth.logout();
     router.push("/");
-    console.log("pushed");
   };
-  // if (!auth.loggedIn) {
-  //   router.push("/");
-  // }
 
   const [addProduct, setAddProduct] = useState(false);
   const [viewProduct, setViewProduct] = useState(false);
-  const [edit, setEdit] = useState({mode : false, product:{}});
+  const [edit, setEdit] = useState({ mode: false, product: {} });
   const [editProduct, setEditProduct] = useState({});
 
   const [myProduct, setMyProduct] = useState([]);
 
-  const handleAddProduct = () => {
+  const [loadingProduct, setLoadingProduct] = useState(false);
+
+  const handleAddProduct = async () => {
     addProduct ? setAddProduct(false) : setAddProduct(true);
+
+    setLoadingProduct(true);
+
+    axios
+      .post("http://localhost:8000/plans/productList", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        // console.log(res.data.product);
+        setProductList(res.data.product);
+        setLoadingProduct(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoadingProduct(false);
+      });
   };
 
   const handleEdit = (product) => {
     setEdit((prevState) => ({
       ...prevState,
-      mode : true,
-      product : product
-    }))
-  }
+      mode: true,
+      product: product,
+    }));
+  };
 
   const handleEditProduct = (e) => {
-    setEditProduct((prevState)=>({
+    setEditProduct((prevState) => ({
       ...prevState,
-      [e.target.name] : e.target.value
-    }))
-  }
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const handleSubmitEdit = (product) => {
     // editProduct.name = edit.product.name;
     // editProduct._id = edit.product._id;
-    console.log(editProduct, product._id)
-    if(confirm("Confirm Edit")){
-      axios.patch(`http://localhost:8000/plans/crudPlan/${product._id}`, {
-        headers: {
-          authorization: `${localStorage.getItem("accessToken")}`,
-        },
-        editProduct
-      }).then((res)=>{
-        console.log(res)
-        setEdit(false);
-        setEditProduct({});
-      }).catch((err)=>{
-        console.log(err)
-      });
-      
+    // console.log(editProduct, product._id)
+    if (confirm("Confirm Edit")) {
+      axios
+        .patch(`http://localhost:8000/plans/crudPlan/${product._id}`, {
+          headers: {
+            authorization: `${localStorage.getItem("accessToken")}`,
+          },
+          editProduct,
+        })
+        .then((res) => {
+          // console.log(res)
+          setEdit(false);
+          setEditProduct({});
+          getProducts();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }
+  };
 
   const handleCancelEdit = () => {
     setEdit(false);
     setEditProduct({});
-  }
+  };
 
   const handleDelete = (product) => {
     // console.log(id)
     confirm("Confirm delete") &&
-      axios.delete(`http://localhost:8000/plans/crudPlan/${product._id}`,
-       {data: {
-        headers: {
-          'authorization': `${localStorage.getItem("accessToken")}`,
-        }
-      }}
-      );
-      // axios({
-      //   method: "delete",
-      //   url: `http://localhost:8000/plans/crudPlan/${product._id}`,
-      //   data: {
-      //     headers: {
-      //     'authorization': `${localStorage.getItem("accessToken")}`,
-      //   }
-      //   },
-      // });
+      axios.delete(`http://localhost:8000/plans/crudPlan/${product._id}`, {
+        data: {
+          headers: {
+            authorization: `${localStorage.getItem("accessToken")}`,
+          },
+        },
+      });
   };
 
-  // async function getProduct() {
-  //     let res = await axios.post("http://localhost:8000/plans/crudPlan/farmer", {
-  //       headers: {
-  //         authorization: `${localStorage.getItem("accessToken")}`
-  //       }
-  //     })
-  //     .then((res) => res.json())
-  //     .then(data => {
-  //       console.log(res)
-  //     })
-  // }
-
-  const handleViewProduct = () => {
-    viewProduct ? setViewProduct(false) : setViewProduct(true);
-    viewProduct && 
+  const getProducts = () => {
     axios
       .post("http://localhost:8000/plans/crudPlan/farmer", {
         headers: {
@@ -125,18 +131,23 @@ export default function ProfilePage() {
       })
       .then((res) => {
         setMyProduct(res.data.data);
-        console.log(res.data.data);
+        // console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const handleViewProduct = () => {
+    viewProduct ? setViewProduct(false) : setViewProduct(true);
+    getProducts();
+  };
+
   const [newProduct, setNewProduct] = useState({
-    name: "",
+    productId: "",
     duration: "",
     quantity: "",
-    category : "",
+    category: "",
     unit: "",
     price: "",
     discount: "",
@@ -145,11 +156,36 @@ export default function ProfilePage() {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setNewProduct((prevState) => ({
       ...prevState,
-      [name]: value,
+      [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleInputChange = (e) => {
+    setNewProduct((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+
+    axios
+      .post("http://localhost:8000/plans/productHelper", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+        productId: e.target.value,
+      })
+      .then((res) => {
+        console.log(res);
+        setNewProduct((prevState) => ({
+          ...prevState,
+          category: res.data.category.category,
+          unit : res.data.category.unit
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleImageChange = (e) => {
@@ -164,7 +200,7 @@ export default function ProfilePage() {
 
     console.log(newProduct);
     const formData = new FormData();
-    formData.append("name", newProduct.name);
+    formData.append("productId", newProduct.productId);
     formData.append("category", newProduct.category);
     formData.append("duration", newProduct.duration);
     formData.append("price", newProduct.price);
@@ -175,7 +211,7 @@ export default function ProfilePage() {
     formData.append("image", newProduct.image);
 
     axios
-      .post("http://localhost:8000/plans/crudPlan",formData, {
+      .post("http://localhost:8000/plans/crudPlan", formData, {
         headers: {
           authorization: `${localStorage.getItem("accessToken")}`,
         },
@@ -186,49 +222,21 @@ export default function ProfilePage() {
           ...newProduct,
           name: "",
           duration: "",
+          category: "",
           quantity: "",
           unit: "",
           price: "",
           discount: "",
           description: "",
+          image: "",
         }));
+        document.getElementById("makedef").value = "DEFAULT";
         toast("Item added successfully");
       })
       .catch((err) => {
         // console.log(err)
         toast.error(err.response?.data?.message || err.message);
       });
-
-    // axios
-    //   .post("http://localhost:8000/plans/crudPlan", {
-    //     headers: {
-    //       authorization: `${localStorage.getItem("accessToken")}`,
-    //     },
-    //     name: newProduct.name,
-    //     duration: newProduct.duration,
-    //     quantity: newProduct.quantity,
-    //     unit: newProduct.unit,
-    //     price: newProduct.price,
-    //     discount: newProduct.discount,
-    //     description: newProduct.description,
-    //   })
-    //   .then(() => {
-    //     setNewProduct((newProduct) => ({
-    //       ...newProduct,
-    //       name: "",
-    //       duration: "",
-    //       quantity: "",
-    //       unit: "",
-    //       price: "",
-    //       discount: "",
-    //       description: "",
-    //     }));
-    //     toast("Item added successfully");
-    //   })
-    //   .catch((err) => {
-    //     // console.log(err);
-    //     toast.error(err.response?.data?.message || err.message);
-    //   });
   };
 
   return (
@@ -281,7 +289,6 @@ export default function ProfilePage() {
                   {/* button for add product*/}
                   Add Entries
                   <span>
-                    {" "}
                     {addProduct ? (
                       <ArrowDropUpIcon className="h-10 w-10" />
                     ) : (
@@ -296,25 +303,47 @@ export default function ProfilePage() {
                       className="flex flex-col gap-5 justify-start items-start w-11/12">
                       <div className="flex flex-col lg:flex-row  w-full">
                         <label className="w-1/3">Name</label>
-                        <input
-                          value={newProduct.name}
-                          placeholder={"Apple"}
-                          type="text"
-                          onChange={handleChange}
-                          name="name"
-                          className="bg-gray-200 rounded-md w-2/3 "
-                        />
+                        <select
+                          id="makedef"
+                          name="productId"
+                          defaultValue={"DEFAULT"}
+                          // value = {selectedProduct.name}
+                          onChange={handleInputChange}
+                          className="text-sm pl-1 text-gray-400 py-1 bg-gray-200 rounded-md w-2/3   border-2 focus:outline-none focus-within:border-blue-500 rounded-md">
+                          <option
+                            value="DEFAULT"
+                            disabled
+                            className="text-gray-400">
+                            Select Product
+                          </option>
+                          {loadingProduct ? (
+                            <option disabled>Loading Products...</option>
+                          ) : (
+                            productList.map((product, idx) => {
+                              return (
+                                <option value={product._id} key={idx}>
+                                  {product.name}
+                                </option>
+                              );
+                            })
+                          )}
+                        </select>
                       </div>
                       <div className="flex flex-col lg:flex-row  w-full">
                         <label className="w-1/3">Category</label>
-                        <input
+                        {/* <input
                           value={newProduct.category}
                           placeholder={"fruits"}
                           type="text"
                           onChange={handleChange}
                           name="category"
                           className="bg-gray-200 rounded-md w-2/3 "
-                        />
+                        /> */}
+                        <label className="bg-gray-200 rounded-md w-2/3 ">
+                          {newProduct.category
+                            ? newProduct.category
+                            : "Select Product First"}
+                        </label>
                       </div>
                       <div className="flex flex-col lg:flex-row  w-full">
                         <label className="w-1/3">Life Time</label>
@@ -347,30 +376,14 @@ export default function ProfilePage() {
                           type="text"
                           onChange={handleChange}
                           name="quantity"
-                          className="bg-gray-200 rounded-md w-2/3 "
+                          className={
+                            newProduct.category
+                              ? "bg-gray-200 rounded-md w-1/2 "
+                              : "bg-gray-200 rounded-md w-2/3 "
+                          }
                         />
+                        {newProduct.category && <label>/{newProduct.unit}</label>}
                       </div>
-                      <div className="flex flex-col lg:flex-row  w-full">
-                        <label className="w-1/3">Quantity</label>
-                        <select
-                          id="makedef"
-                          name="unit"
-                          defaultValue={"DEFAULT"}
-                          onChange={handleChange}
-                          className="w-52 text-sm pl-1 text-gray-400 py-1   border-2 focus:outline-none focus-within:border-blue-500 rounded-md">
-                          <option
-                            value="DEFAULT"
-                            disabled
-                            className="text-gray-400">
-                            Select Unit
-                          </option>
-                          <option value="KG">KG</option>
-                          <option value="litre">Litre</option>
-                          <option value="piece">Piece</option>
-                          <option value="dozen">Dozen</option>
-                        </select>
-                      </div>
-
                       <div className="flex flex-col lg:flex-row  w-full">
                         <label className="w-1/3">Discount</label>
                         <input
