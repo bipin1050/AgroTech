@@ -1,33 +1,53 @@
-import React from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import Products from '../../components/products'
 
 const Productpage = () => {
+
+  const router = useRouter();
+
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:8000/plans/getCategory").then((res) => {
+      console.log(res.data.data);
+      setCategory(res.data.data);
+    });
+  }, []);
+
+  const handleCategory = (category) => {
+    router.push({
+      pathname: `/category`,
+      query: { category: category },
+    });
+  };
+
   return (
     <div>
       <Header />
-        <div>
-          <div className='top-div flex justify-around'>
-            <div className='category'>
-              <ul>
-                <li>Vegetables</li>
-                <li>Fruits</li>
-                <li>Dry Fruits</li>
-                <li>Meats</li>
-                <li>Diary</li>
-
-              </ul>
-            </div>
-          </div>
-          <div className='products'>
-            <Products />
-          </div>
-
+      <div>
+        <div className="top-div flex flex-row justify-around">
+          {category.map((item, idx) => {
+            return (
+              <div
+                className="pt-2"
+                onClick={() => {
+                  handleCategory(item.name);
+                }}>
+                {item.name}
+              </div>
+            );
+          })}
         </div>
-        <Footer />
+        <div className="products">
+          <Products />
+        </div>
+      </div>
+      <Footer />
     </div>
-  )
+  );
 }
 
 export default Productpage
