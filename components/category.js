@@ -26,7 +26,7 @@ export const Category = () => {
       <h1 className="text-xl py-5">Category List</h1>
       {category.map((item, idx) => {
         return (
-          <div className="pt-2">
+          <div className="pt-2 hover:cursor-pointer">
             <h3 onClick={()=>{handleCategory(item.name)}}>{item.name}</h3>
           </div>
         );

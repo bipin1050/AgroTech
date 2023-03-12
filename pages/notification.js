@@ -32,11 +32,24 @@ const Notification = () => {
       },
     }).then((res)=>{
       setMyNotification(res.data.notification)
-      console.log(res.data.notification[0])
+      console.log(res.data.notification)
     }).catch((err)=>{
       console.log(err);
     });
   },[])
+
+  useEffect(()=>{
+    axios.post("http://localhost:8000/status/updateNotificationStatus", {
+      headers: {
+        authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res)=>{
+      console.log(res);
+      auth.setNotificationCount(0)
+    }).catch((err)=>{
+      console.log(err);
+    });
+  }, [])
 
   const handleblogSubmit = (e) => {
 
@@ -93,21 +106,26 @@ const Notification = () => {
             </form>
           </div>
         )}
-        {/* {auth.role !== 'admin' && (
-          <div>
-            {myNotification.map((notification, idx) => {
-                <p>{notification.notification}</p>
-                {console.log(notification.notification)}
-            })} 
+        {auth.role !== "admin" && (
+          // <div>
+          //   {myNotification.map((notification, idx) => {
+          //       <p>{notification.notification}</p>
+          //       {console.log(notification.notification)}
+          //   })}
+          // </div>
+
+          <div className="m-5 flex justify-center">
+            <div className="w-[70%] flex flex-col justify-center items-center bg-[#D9D9D9]">
+              {myNotification.map((notification, idx) => {
+                return (
+                  <div className="w-[90%] p-[5px] m-[3px] rounded-md flex justify-center hover:bg-[#c9c9c9] cursor-pointerz">
+                    <p className="">{notification.notification}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        )} */}
-        <div>
-          {myNotification.map((notification, idx) => {
-            return (
-              <p>{notification.notification}</p>
-            )
-          })}
-        </div>
+        )}
       </div>
       <Footer />
     </div>

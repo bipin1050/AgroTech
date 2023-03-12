@@ -143,7 +143,14 @@ const Header = () => {
 
         <div className="logo-section">
           {/* {t.title} */}
-          <Image src={logo} width={100} height={96} onClick={() => {Router.push('/')}}/>
+          <Image
+            src={logo}
+            width={100}
+            height={96}
+            onClick={() => {
+              Router.push("/");
+            }}
+          />
         </div>
         <div className="navdiv">
           <div className="navlink">
@@ -199,7 +206,7 @@ const Header = () => {
             <div>
               {auth.loggedIn && (
                 <button onClick={handleNotification}>
-                  <Badge badgeContent={5} color="secondary" overlap="circular">
+                  <Badge badgeContent={auth.notificationCount} color="secondary" overlap="circular">
                     <NotificationsIcon />
                   </Badge>
                 </button>
@@ -207,13 +214,18 @@ const Header = () => {
             </div>
             <div>
               {!auth.loggedIn && (
-                <button onClick={()=> {Router.push('/login')}}>
-                    <PermIdentityOutlinedIcon />
-                    <span> Login </span>
+                <button
+                  onClick={() => {
+                    Router.push("/login");
+                  }}>
+                  <PermIdentityOutlinedIcon />
+                  <span> Login </span>
                 </button>
               )}
               {auth.loggedIn && (
-                <button onClick={handleProfile}>Hi {auth.name}</button>
+                <button onClick={handleProfile}>
+                  Hi {auth.name.split(' ')[0]}
+                </button>
               )}
             </div>
             <div>

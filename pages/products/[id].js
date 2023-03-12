@@ -65,22 +65,21 @@ const ProductDetails = () => {
       });
   };
 
-  const handleBuyNow = () => {
-    // if (confirm("Are you sure want to buy the Product") == true) {
-    //     axios.post("http://localhost:8000/plans/buyProduct", {
-    //     headers: {
-    //         'authorization': `${localStorage.getItem("accessToken")}`
-    //     },
-    //     productid : id,
-    //     number : quantity
-    //     }).then((res) => {
-    //         console.log(res)
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-    // }
-    setReadyBuy(true);
-  };
+    const handlePlaceOrder = () => {
+      if (confirm("Are you sure want to buy the Product") == true) {
+          axios.post("http://localhost:8000/plans/buyProduct", {
+          headers: {
+              'authorization': `${localStorage.getItem("accessToken")}`
+          },
+          productid : id,
+          number : quantity
+          }).then((res) => {
+              console.log(res)
+          }).catch((err) => {
+              console.log(err)
+          })
+      }
+    }
   return (
     <div>
       <Header />
@@ -112,7 +111,7 @@ const ProductDetails = () => {
               </span>
               <span>
                 <button
-                  onClick={handleBuyNow}
+                  onClick={() => {setReadyBuy(true)}}
                   className="bg-[#FF5732] w-48 p-2 mx-1 focus:opacity-[0.6]">
                   Buy Now
                 </button>
@@ -132,11 +131,14 @@ const ProductDetails = () => {
         <div>Farmer side</div>
       </div>
       {readyBuy && (
-        <div>
-          <h1>Confirm Your Credentials</h1>
-          <h3>Email : {auth.email}</h3>
-          <h3>Location: Will update on next working days</h3>
-        </div>
+        <>
+          <div>
+            <h1>Confirm Your Credentials</h1>
+            <h3>Email : {auth.email}</h3>
+            <h3>Location: Will update on next working days</h3>
+          </div>
+          <button onClick={handlePlaceOrder}>Place Order</button>
+        </>
       )}
       <div>Related Products</div>
       <Footer />

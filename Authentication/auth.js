@@ -14,26 +14,11 @@ export const AuthProvider = ({children}) => {
     const [role, setRole] = useState(null);
     const [name, setName] = useState(null);
 
+    const [notificationCount, setNotificationCount] = useState(0);
+
     // console.log(loggedIn);
 
     useEffect(()=>{
-        // localStorage.getItem("accessToken") && axios.post("http://localhost:8000/user/isLogin", {
-        // headers: {
-        //     'authorization': `${localStorage.getItem("accessToken")}` 
-        // }
-        // })
-        // .then((res)=>{
-        //     // console.log(res)
-        //     setRole(res.data.role);
-        //     setName(res.data.name);
-        //     setEmail(res.data.email);
-        //     setIsLoading(false);
-        //     setLoggedIn(true);
-        // })
-        // .catch((err)=>{
-        //     setIsLoading(false)
-        // })
-
         async function getProfile(){
              try {
                let res = await axios.post(
@@ -45,6 +30,7 @@ export const AuthProvider = ({children}) => {
                  }
                );
                if (res) {
+                console.log(res.data)
                  setRole(res.data.role);
                  setName(res.data.name);
                  setEmail(res.data.email);
@@ -61,8 +47,24 @@ export const AuthProvider = ({children}) => {
         }
     },[])
 
+
+    useEffect(()=>{
+      setInterval(()=>{
+        axios.post("http://localhost:8000/status/getNotificationCount", {
+          headers: {
+            authorization: `${localStorage.getItem("accessToken")}`,
+          },
+        }).then((res)=>{
+          // console.log(res.data.count)
+          setNotificationCount(res.data.count)
+        }).catch((err)=>{
+          console.log(err)
+        });
+      }, 5000)
+    }, [])
+
     const login = (data) => {
-        // console.log(data)
+        console.log(data)
         setAccessToken(data.jwt);
         setRole(data.role);
         setName(data.name);
@@ -81,7 +83,7 @@ export const AuthProvider = ({children}) => {
         setEmail(null);
         localStorage.removeItem("accessToken");
     }
-    return <AuthContext.Provider value={{isLoading, loggedIn, email, name, role, setLoggedIn, login, logout,setAccessToken}}> {children} </AuthContext.Provider>
+    return <AuthContext.Provider value={{isLoading, loggedIn, email, name, role, notificationCount, setNotificationCount, setLoggedIn, login, logout,setAccessToken}}> {children} </AuthContext.Provider>
 }
 
 export const useAuth = () => {
