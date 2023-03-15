@@ -1,4 +1,5 @@
 import axios from "axios";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { userAgent } from "next/server";
 import React, { useEffect, useState } from "react";
@@ -13,10 +14,12 @@ const Blogs = () => {
     axios
       .get("http://localhost:8000/review/getBlogs")
       .then((res) => {
-        console.log(res.data.blogs);
+        console.log(res);
         setBlogs(res.data.blogs);
       })
-      .catch(() => {});
+      .catch(() => {
+        console.log(err);
+      });
   }, []);
 
   const auth = useAuth();
@@ -62,7 +65,7 @@ const Blogs = () => {
   const handleblogSubmit = (e) => {
     e.preventDefault();
 
-    console.log(paragraphs);
+    // console.log(title, author, paragraphs, image);
 
     const formData = new FormData();
     formData.append("title", title);
@@ -102,17 +105,27 @@ const Blogs = () => {
 
   return (
     <div>
+      <Head>
+        <title>Blogs</title>
+        <meta name="description" content="Agro tech - shop fresh here" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Header />
       <div className="flex flex-col items-center w-11/12 lg:w-4/5 m-5">
         {auth.role == "admin" && (
-          <div className="bg-white flex  flex-col w-1/2 rounded-xl p-10 justify-center py-10">
-            <form
-              onSubmit={handleblogSubmit}
-              className="flex flex-col gap-5 justify-start items-start w-11/12">
-              <div className="">
-                <div className="flex flex-col lg:flex-row  w-full">
-                  <label className="w-1/3">Title</label>
+          <>
+            <div className="flex justify-center">
+              <form
+                onSubmit={handleblogSubmit}
+                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-screen-md">
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 font-bold mb-2"
+                    htmlFor="title">
+                    Title
+                  </label>
                   <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     placeholder="Enter Blogs Title"
                     type="text"
                     value={title}
@@ -120,9 +133,14 @@ const Blogs = () => {
                     name="title"
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row  w-full">
-                  <label className="w-1/3">Author</label>
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 font-bold mb-2"
+                    htmlFor="title">
+                    Author
+                  </label>
                   <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     placeholder="Default is Admin"
                     type="text"
                     value={author}
@@ -130,48 +148,76 @@ const Blogs = () => {
                     name="author"
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row  w-full">
-                  <label className="w-1/3">Product Image</label>
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 font-bold mb-2"
+                    htmlFor="title">
+                    Product Image
+                  </label>
                   <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="file"
                     name="image"
                     accept="image/*"
-                    className="w-2/3 "
                     onChange={handleImage}
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row  w-full">
-                  <label className="w-1/3">Blog Description</label>
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 font-bold mb-2"
+                    htmlFor="title">
+                    Blog Description
+                  </label>
                   <textarea
                     placeholder="Type \n for new paragraph"
                     value={inputValue}
                     onChange={handleInputChange}
-                    className="w-[90%] m-10"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     onBlur={handleStringToArray}
                   />
                 </div>
-              </div>
-              <button type="submit">Submit Blog</button>
-            </form>
-          </div>
+                <button
+                  type="submit"
+                  className="w-full text-white items-center bg-[#3E9B05] rounded-md p-2">
+                  Submit Blog
+                </button>
+              </form>
+            </div>
+          </>
         )}
-        <div>
-          <h1> Recent Blogs </h1>
+        <div className="flex flex-col">
+          <div className="flex justify-around text-4xl font-bold mb-5">
+            <h1>Recent Blogs</h1>
+          </div>
           {blogs.map((blog, id) => {
             return (
-              <div
-                key={id}
-                onClick={() => {
-                  handleFullBlogs(blog._id);
-                }}>
-                <h6>{blog.publicationDate.slice(0, 10)}</h6>
-                <h1>{blog.title}</h1>
-                <h1>{blog.highlights}...</h1>
-                <h2>-By {blog.author}</h2>
-                <img
-                  className="w-[70%] h-[500px]"
-                  src={`http://localhost:8000/images/${blog.image}`}
-                />
+              <div className="flex justify-around items-center">
+                <div
+                  className="bg-white rounded-lg shadow-lg flex w-full"
+                  key={id}
+                  onClick={() => {
+                    handleFullBlogs(blog._id);
+                  }}>
+                  <img
+                    src={`http://localhost:8000/images/${blog.image}`}
+                    alt={blog.title}
+                    // className="h-48 w-full object-cover"
+                    className="w-48"
+                    style={{ height: "200px", objectFit: "cover" }}
+                  />
+                  <div className="p-4">
+                    <p className="text-gray-400 text-sm">
+                      {blog.publicationDate.slice(0, 10)}
+                    </p>
+                    <h2 className="text-2xl font-semibold mb-2">
+                      {blog.title}
+                    </h2>
+                    <p className="text-gray-700 mb-4">{blog.highlights}...</p>
+                    <div className="flex items-center">
+                      <p className="text-gray-700">{blog.author}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}

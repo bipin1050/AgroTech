@@ -1,5 +1,6 @@
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 function StarRating({ count }) {
   const fullStars = Math.floor(count);
@@ -21,11 +22,21 @@ function StarRating({ count }) {
     />
   ));
 
+  const emptyStars = Array.from({ length: 5 - Math.ceil(count) }, (_, index) => (
+    <StarOutlineIcon
+      key={index}
+      style={{ verticalAlign: "middle" }}
+      fontSize="small"
+      sx={{ color: "#ffc721" }}
+    />
+  ));
+
   return (
     <div style={{ display: "inline-block" }}>
       <div style={{ display: "flex", alignItems: "center", lineHeight: 0 }}>
         {stars}
         {halfStar}
+        {emptyStars}
       </div>
     </div>
   );

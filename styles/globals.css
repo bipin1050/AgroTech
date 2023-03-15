@@ -150,37 +150,7 @@ body{
     display: flex;
 }
 
-/* --------footer-------- */
 
-.footer {
-    color: black;
-    width: 100%;
-    margin-top: 15px;
-    padding: 2.5%;
-    background-image: linear-gradient(rgb(111, 246, 87), rgb(180, 240, 121));
-    border-bottom: 3px solid #787881;
-}
-
-.links {
-    width: 50%;
-}
-
-.contact-info {
-    width: 40%;
-    overflow: hidden;
-}
-
-.copyright {
-    width: 100%;
-    padding: 2% 0;
-    padding-left: 12%;
-    text-align: left;
-    color: black;
-    background-color: rgb(180, 240, 121);
-}
-.base-bar{
-    display: none;
-}
 .login{
     background: linear-gradient(#3E9B05  50%, #ffffff 50%)
 }

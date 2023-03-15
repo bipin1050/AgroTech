@@ -5,64 +5,43 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import StarRating from "../../components/rating";
+import Searchbar from "../../components/searchbar";
 
-const ProductByCategory = () => {
+const Searchproduct = () => {
   const router = useRouter();
-  const { category } = router.query;
 
-  const [productByCategory, setProductByCategory] = useState([]);
+  const { value } = router.query;
+  const [searchedProduct, setSearchedProduct] = useState([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
 
   useEffect(() => {
+    setLoadingSearch(true)
     axios
-      .post("http://localhost:8000/plans/getProductByCategory", {
-        category: category,
-      })
+      .get(`http://localhost:8000/plans/search/${value}`)
       .then((res) => {
-        // console.log(res.data.data);
-        setProductByCategory(res.data.data);
+        console.log(res.data.data);
+        setSearchedProduct(res.data.data);
+        setLoadingSearch(false);
       })
-      .catch((err) => {});
-  }, [category]);
-
-  const [categoryList, setCategoryList] = useState([]);
-  useEffect(() => {
-    axios.get("http://localhost:8000/plans/getCategory").then((res) => {
-      console.log(res.data.data);
-      setCategoryList(res.data.data);
-    });
-  }, []);
-
-  const handleCategory = (category) => {
-
-    router.push({
-      pathname : "/category",
-      query : {category: category}
-    })
-  }
+      .catch((err) => {
+        console.log(err);
+        setLoadingSearch(false);
+      });
+  }, [value]);
   return (
     <div>
       <Head>
-        <title>Category | {category} </title>
+        <title>Search | {value} </title>
         <meta name="description" content="Agro tech - shop fresh here" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
       <div>
-        <div className="top-div flex flex-row justify-around">
-          {categoryList.map((item, idx) => {
-            return (
-              <div
-                className="pt-2"
-                onClick={() => {
-                  handleCategory(item.name);
-                }}>
-                {item.name}
-              </div>
-            );
-          })}
+        <div className="flex justify-end pt-3">
+          <Searchbar />
         </div>
         <div className="flex flex-wrap justify-around gap-5 w-full my-5 p-5 bg-primary rounded-md overflow-hidden">
-          {productByCategory.map((product, idx) => {
+          {searchedProduct.map((product, idx) => {
             return (
               <div
                 key={idx}
@@ -105,4 +84,4 @@ const ProductByCategory = () => {
   );
 };
 
-export default ProductByCategory;
+export default Searchproduct;

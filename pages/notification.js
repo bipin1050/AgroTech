@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../Authentication/auth'
@@ -73,6 +74,11 @@ const Notification = () => {
   };
   return (
     <div>
+      <Head>
+        <title>Notification | AgroTech</title>
+        <meta name="description" content="Agro tech - shop fresh here" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Header />
       <div>
         {auth.role == "admin" && (
@@ -101,19 +107,13 @@ const Notification = () => {
                 </option>
                 <option>retailer/wholeseller</option>
                 <option>farmer</option>
+                <option>trucker</option>
               </select>
               <button type="submit">Send Notification</button>
             </form>
           </div>
         )}
         {auth.role !== "admin" && (
-          // <div>
-          //   {myNotification.map((notification, idx) => {
-          //       <p>{notification.notification}</p>
-          //       {console.log(notification.notification)}
-          //   })}
-          // </div>
-
           <div className="m-5 flex justify-center">
             <div className="w-[70%] flex flex-col justify-center items-center bg-[#D9D9D9]">
               {myNotification.map((notification, idx) => {

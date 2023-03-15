@@ -69,8 +69,7 @@ const Products = () => {
                   <StarSharpIcon style={{ color: "yellow" }} />
                 </div> */}
                 <p className="text-md font-light">
-                  Rs. {(product.price * (100 - product.discount)) / 100} per
-                  unit
+                  Rs. {(product.price * (100 - product.discount)) / 100} / {product.unit}
                 </p>
                 {product.discount > 0 && (
                   <div className="flex flex-row text-gray-400">
@@ -78,7 +77,7 @@ const Products = () => {
                     <p className="px-2">-{product.discount}%</p>
                   </div>
                 )}
-                <StarRating count={4.5} />
+                <StarRating count={product.ratingsAverage} />
               </div>
             </div>
           );

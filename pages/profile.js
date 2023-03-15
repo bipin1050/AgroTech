@@ -13,10 +13,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import swal from "sweetalert";
 import { toast } from "react-toastify";
-
-import Select from "react-select";
 
 export default function ProfilePage() {
   const auth = useAuth();
@@ -35,12 +32,22 @@ export default function ProfilePage() {
     router.push("/");
   };
 
+  //profile picture edit 
+   const [showEditIcon, setShowEditIcon] = useState(false);
+
+   const handleMouseEnter = () => {
+     setShowEditIcon(true);
+   };
+   const handleMouseLeave = () => {
+     setShowEditIcon(false);
+   };
+
+
   const [addProduct, setAddProduct] = useState(false);
   const [viewProduct, setViewProduct] = useState(false);
   const [edit, setEdit] = useState({ mode: false, product: {} });
   const [editProduct, setEditProduct] = useState({});
-  
-  
+
   const [productHistory, setProductHistory] = useState(false);
   const [myHistory, setMyHistory] = useState([]);
 
@@ -184,7 +191,7 @@ export default function ProfilePage() {
         setNewProduct((prevState) => ({
           ...prevState,
           category: res.data.category.category,
-          unit : res.data.category.unit
+          unit: res.data.category.unit,
         }));
       })
       .catch((err) => {
@@ -243,6 +250,7 @@ export default function ProfilePage() {
       });
   };
 
+  //for retailer/wholeseller product history
   const getProductsHistory = () => {
     axios
       .post("http://localhost:8000/status/seeProductStatus", {
@@ -264,10 +272,163 @@ export default function ProfilePage() {
     getProductsHistory();
   };
 
+  //for trucker product assigned list
+  const [truckerProduct, setTruckerProduct] = useState([]);
+  const handleTruckerHistory = () => {
+    productHistory ? setProductHistory(false) : setProductHistory(true);
+
+    axios
+      .post("http://localhost:8000/status/seeProductStatusByTrucker", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        setTruckerProduct(res.data.data);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //for trucker change status processing to dispatch
+  const handleEditStatus = (id) => {
+    axios.post("http://localhost:8000/status/changeProductStatus", {
+      headers: {
+        authorization: `${localStorage.getItem("accessToken")}`,
+      },
+      statusid: id,
+      status: "Product dispatched from farmer",
+    });
+  };
+
+
+  const [isAssign, setIsAssign] = useState(false); //is Unassigned button clicked
+  const [unAssignProduct, setUnAssignProduct] = useState([]); //list of items to be assigned to trucker for disptach from farm
+  const [toBeAssignedList, setToBeAssignedList] = useState([]); //list of items to be assigned to specific trucker
+
+  const [clickAssign, setClickAssign] = useState(false); //once clicked will show list of available trucker
+  const [availableTrucker, setAvailbleTrucker] = useState([]); //list of available truckers
+  // const [isDispatched, setIsDispatched] = useState(true);
+
+  const [checkCountUnassigned, setCheckCountUnassigned] = useState(0);
+
+  const [checkCountAgrotech, setCheckCountAgrotech] = useState(0);
+  const [checkCountAgrotechDispatch, setCheckCountAgrotechDispatch] = useState(0);
+  const [checkCountDelivered, setCheckCountDelivered] = useState(0);
+  const [isAssignProducts, setAssignProduct] = useState(true)
+  const handleAssignProduct = () => {
+
+  }
+
+  //fetching unassigned list of product (i.e, just bought by customers)
+  const handleUnAssignProduct = () => {
+    isAssign ? setIsAssign(false) : setIsAssign(true);
+
+    axios
+      .post("http://localhost:8000/status/seeProductStatus", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        setUnAssignProduct(res.data.data);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //making list of product to be assigned by admin
+  const handleAddAssignList = (event) => {
+    console.log(event.target.checked);
+    const checkboxId = event.target.value;
+    if (event.target.checked) {
+      setCheckCountUnassigned(checkCountUnassigned + 1);
+      setToBeAssignedList([...toBeAssignedList, checkboxId]);
+    } else {
+      const updatedIds = toBeAssignedList.filter((id) => id !== checkboxId);
+      setToBeAssignedList(updatedIds);
+      setCheckCountUnassigned(checkCountUnassigned - 1);
+    }
+  };
+
+  //fetch available trucker list by admin
+  const handleAssign = () => {
+    setClickAssign(true);
+    axios
+      .post("http://localhost:8000/status/seeOnlineTruckerStatus", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        setAvailbleTrucker(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //assigning a list of products to a farmer
+  const handleTruckAssign = (id) => {
+    // console.log(toBeAssignedList);
+    axios
+      .post("http://localhost:8000/status/assignTrucker", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+        statusId: toBeAssignedList,
+        truckerId: id,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const [isFarmDispatch, setIsFarmDispatch] = useState(false);
+  const [farmDispatched, setFarmDispatched] = useState([]);
+  const [checkCountFarmDispatch, setCheckCountFarmDispatch] = useState(0);
+
+  const handleFarmDispatch = () => {
+    isFarmDispatch ? setIsFarmDispatch(false) : setIsFarmDispatch(true);
+
+    axios
+      .post("http://localhost:8000/status/seeProductDispatchedFromFarmer", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        setFarmDispatched(res.data.data);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const [profileImage, setProfileImage] = useState("");
+  const handleEditProfile = () => {
+    const formData = new FormData();
+    formData.append("image", profileImage);
+
+    axios.post("http://localhost:8000/...", formData, {
+      headers : {
+        authorization : `${localStorage.getItem('accessToken')}`
+      }
+    })
+  }
+
   return (
     <>
       <Head>
-        <title>Profile | Agro Tech</title>
+        <title>{auth.name}</title>
         <meta name="description" content="Profile Page for Agro App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -278,14 +439,31 @@ export default function ProfilePage() {
         <div className="px-32">
           <div className="bg-primary my-10 rounded-md  flex flex-col justify-center items-center">
             <div className="flex flex-row justify-center gap-16 mt-10 pb-5 border-b border-black">
-              <div className="rounded-full h-52 w-52 ">
-                <img
-                  src={profile_picture.src}
-                  alt="User Profile Picture"
-                  width={200}
-                  height={200}
-                  className="rounded-full aspect-square"
-                />
+              <div className="relative inline-block">
+                <div className="relative">
+                  <img
+                    src={profile_picture.src}
+                    alt="Profile image"
+                    className={"rounded-full"}
+                    style={{ filter: showEditIcon ? "blur(2px)" : "none" }}
+                    width={208}
+                    height={208}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  />
+                  {/* Position the edit icon at the bottom center of the image */}
+                  <div
+                    className={`absolute left-1/2 transform -translate-x-1/2 bottom-0 transition-opacity duration-300 ${
+                      showEditIcon ? "opacity-100" : "opacity-0"
+                    }`}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}>
+                    {/* Add a gray background to the edit icon */}
+                    <div className="bg-gray-500 rounded-full p-2" onClick={handleEditProfile}>
+                      <EditOutlinedIcon className="text-white text-xl" />
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="bg-white rounded-xl p-5 h-[223px] w-[701px] flex justify-start items-center">
                 <div className="font-medium text-xl">
@@ -582,6 +760,7 @@ export default function ProfilePage() {
                 )}
               </div>
             )}
+
             {(auth.role == "retailer/wholeseller" || auth.role == "farmer") && (
               <div className="flex flex-col gap-5 items-center w-11/12 lg:w-4/5 m-5">
                 <button
@@ -630,10 +809,11 @@ export default function ProfilePage() {
                 )}
               </div>
             )}
+
             {auth.role == "trucker" && (
               <div className="flex flex-col gap-5 items-center w-11/12 lg:w-4/5 m-5">
                 <button
-                  onClick={handleProductHistory}
+                  onClick={handleTruckerHistory}
                   className="bg-white border-black border px-3  rounded-xl">
                   Assigned Product
                   <span>
@@ -646,7 +826,7 @@ export default function ProfilePage() {
                 </button>
                 {productHistory && (
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 self-center justify-center p-10 items-center w-full">
-                    {myHistory.map((product, idx) => {
+                    {truckerProduct.map((product, idx) => {
                       return (
                         <div
                           key={idx}
@@ -665,12 +845,14 @@ export default function ProfilePage() {
                             <div className="flex flex-row w-full ">
                               <span className="w-2/5">Status</span>
                               <span className="w-3/5">{product.status}</span>
-                              <button
-                                onClick={() => {
-                                  // handleEdit(product);
-                                }}>
-                                <EditOutlinedIcon />
-                              </button>
+                              {product.status == "Trucker Assigned" && (
+                                <button
+                                  onClick={() => {
+                                    handleEditStatus(product._id);
+                                  }}>
+                                  <EditOutlinedIcon />
+                                </button>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -678,6 +860,257 @@ export default function ProfilePage() {
                     })}
                   </div>
                 )}
+              </div>
+            )}
+
+            {auth.role == "admin" && (
+              <div className="flex flex-col gap-5 items-center w-11/12 lg:w-4/5 m-5">
+                {/* Unassigned Product */}
+
+                <button
+                  onClick={handleUnAssignProduct}
+                  className="bg-white border-black border px-3  rounded-xl">
+                  Unassigned Products
+                  <span>
+                    {isAssign ? (
+                      <ArrowDropUpIcon className="h-10 w-10" />
+                    ) : (
+                      <ArrowDropDownIcon className="h-10 w-10" />
+                    )}
+                  </span>
+                </button>
+                {isAssign && (
+                  <>
+                    <button
+                      className={`bg-blue-500 text-white py-2 px-4 mt-2 rounded-md ${
+                        checkCountUnassigned
+                          ? ""
+                          : "opacity-50 cursor-not-allowed"
+                      }`}
+                      disabled={!checkCountUnassigned}
+                      onClick={handleAssign}>
+                      Assign to Trucker
+                    </button>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 self-center justify-center p-10 items-center w-full">
+                      {unAssignProduct.map((product, idx) => {
+                        return (
+                          <div
+                            key={idx}
+                            className="bg-white flex flex-col rounded-xl p-10 justify-center relative ">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 right-0 mt-5 mr-5  w-4 h-4"
+                              onChange={handleAddAssignList}
+                              value={product._id}
+                            />
+                            <div className="flex flex-col gap-5 justify-start items-start w-11/12">
+                              <div className="flex flex-row  w-full">
+                                <span className="w-2/5">Name</span>
+                                <span className="w-3/5">
+                                  {product.productname}
+                                </span>
+                              </div>
+                              <div className="flex flex-row w-full ">
+                                <span className="w-2/5">Quantity</span>
+                                <span className="w-3/5">
+                                  {product.quantity}
+                                </span>
+                              </div>
+                              <div className="flex flex-row w-full ">
+                                <span className="w-2/5">Status</span>
+                                <span className="w-3/5">{product.status}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {clickAssign && (
+                      <div className="fixed z-50 top-0 left-0 w-full h-full flex flex-col  items-center justify-center">
+                        <div className="w-[50%] h-[50%] bg-[#d9d9d9]">
+                          <div>
+                            {availableTrucker.map((trucker, idx) => {
+                              return (
+                                <div
+                                  onClick={() => {
+                                    handleTruckAssign(trucker._id);
+                                  }}>
+                                  <h1>Name : {trucker.name}</h1>
+                                  <h3>Email : {trucker.email}</h3>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <button
+                            onClick={() => {
+                              setClickAssign(false);
+                            }}>
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Assigned but not dispatched */}
+
+                <button
+                  // onClick={handleTruckerAssigned}
+                  className="bg-white border-black border px-3  rounded-xl">
+                  Assigned Products
+                  <span>
+                    {isAssignProducts ? (
+                      <ArrowDropUpIcon className="h-10 w-10" />
+                    ) : (
+                      <ArrowDropDownIcon className="h-10 w-10" />
+                    )}
+                  </span>
+                </button>
+                {isFarmDispatch && (
+                  <>
+                    <button
+                      className={`bg-blue-500 text-white py-2 px-4 mt-2 rounded-md ${
+                        checkCountFarmDispatch
+                          ? ""
+                          : "opacity-50 cursor-not-allowed"
+                      }`}
+                      disabled={!checkCountFarmDispatch}
+                      onClick={handleAssign}>
+                      Assign to Trucker
+                    </button>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 self-center justify-center p-10 items-center w-full">
+                      {farmDispatched.map((product, idx) => {
+                        return (
+                          <div
+                            key={idx}
+                            className="bg-white flex flex-col rounded-xl p-10 justify-center relative ">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 right-0 mt-5 mr-5  w-4 h-4"
+                              onChange={handleAddAssignList}
+                              value={product._id}
+                            />
+                            <div className="flex flex-col gap-5 justify-start items-start w-11/12">
+                              <div className="flex flex-row  w-full">
+                                <span className="w-2/5">Name</span>
+                                <span className="w-3/5">
+                                  {product.productname}
+                                </span>
+                              </div>
+                              <div className="flex flex-row w-full ">
+                                <span className="w-2/5">Quantity</span>
+                                <span className="w-3/5">
+                                  {product.quantity}
+                                </span>
+                              </div>
+                              <div className="flex flex-row w-full ">
+                                <span className="w-2/5">Status</span>
+                                <span className="w-3/5">{product.status}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+                <button
+                  onClick={handleFarmDispatch}
+                  className="bg-white border-black border px-3  rounded-xl">
+                  Dispatched Products (from Farm)
+                  <span>
+                    {isFarmDispatch ? (
+                      <ArrowDropUpIcon className="h-10 w-10" />
+                    ) : (
+                      <ArrowDropDownIcon className="h-10 w-10" />
+                    )}
+                  </span>
+                </button>
+                {isFarmDispatch && (
+                  <>
+                    <button
+                      className={`bg-blue-500 text-white py-2 px-4 mt-2 rounded-md ${
+                        checkCountFarmDispatch
+                          ? ""
+                          : "opacity-50 cursor-not-allowed"
+                      }`}
+                      disabled={!checkCountFarmDispatch}
+                      onClick={handleAssign}>
+                      Assign to Trucker
+                    </button>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 self-center justify-center p-10 items-center w-full">
+                      {farmDispatched.map((product, idx) => {
+                        return (
+                          <div
+                            key={idx}
+                            className="bg-white flex flex-col rounded-xl p-10 justify-center relative ">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 right-0 mt-5 mr-5  w-4 h-4"
+                              onChange={handleAddAssignList}
+                              value={product._id}
+                            />
+                            <div className="flex flex-col gap-5 justify-start items-start w-11/12">
+                              <div className="flex flex-row  w-full">
+                                <span className="w-2/5">Name</span>
+                                <span className="w-3/5">
+                                  {product.productname}
+                                </span>
+                              </div>
+                              <div className="flex flex-row w-full ">
+                                <span className="w-2/5">Quantity</span>
+                                <span className="w-3/5">
+                                  {product.quantity}
+                                </span>
+                              </div>
+                              <div className="flex flex-row w-full ">
+                                <span className="w-2/5">Status</span>
+                                <span className="w-3/5">{product.status}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+                <button
+                  onClick={handleAssignProduct}
+                  className="bg-white border-black border px-3  rounded-xl">
+                  Products in Agrotech
+                  <span>
+                    {isAssign ? (
+                      <ArrowDropUpIcon className="h-10 w-10" />
+                    ) : (
+                      <ArrowDropDownIcon className="h-10 w-10" />
+                    )}
+                  </span>
+                </button>
+                <button
+                  onClick={handleAssignProduct}
+                  className="bg-white border-black border px-3  rounded-xl">
+                  Dispatched Product (from Agrotech)
+                  <span>
+                    {isAssign ? (
+                      <ArrowDropUpIcon className="h-10 w-10" />
+                    ) : (
+                      <ArrowDropDownIcon className="h-10 w-10" />
+                    )}
+                  </span>
+                </button>
+                <button
+                  onClick={handleAssignProduct}
+                  className="bg-white border-black border px-3  rounded-xl">
+                  Delivered Products
+                  <span>
+                    {isAssign ? (
+                      <ArrowDropUpIcon className="h-10 w-10" />
+                    ) : (
+                      <ArrowDropDownIcon className="h-10 w-10" />
+                    )}
+                  </span>
+                </button>
               </div>
             )}
           </div>
