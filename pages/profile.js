@@ -28,20 +28,19 @@ export default function ProfilePage() {
   const [productList, setProductList] = useState([]);
 
   const handleLogout = () => {
-    auth.logout();
     router.push("/");
+    auth.logout();
   };
 
-  //profile picture edit 
-   const [showEditIcon, setShowEditIcon] = useState(false);
+  //profile picture edit
+  const [showEditIcon, setShowEditIcon] = useState(false);
 
-   const handleMouseEnter = () => {
-     setShowEditIcon(true);
-   };
-   const handleMouseLeave = () => {
-     setShowEditIcon(false);
-   };
-
+  const handleMouseEnter = () => {
+    setShowEditIcon(true);
+  };
+  const handleMouseLeave = () => {
+    setShowEditIcon(false);
+  };
 
   const [addProduct, setAddProduct] = useState(false);
   const [viewProduct, setViewProduct] = useState(false);
@@ -173,6 +172,8 @@ export default function ProfilePage() {
     }));
   };
 
+  const [predictedPrice, setPredictedPrice] = useState(0);
+
   const handleInputChange = (e) => {
     setNewProduct((prevState) => ({
       ...prevState,
@@ -197,6 +198,15 @@ export default function ProfilePage() {
       .catch((err) => {
         console.log(err);
       });
+
+    // axios.post("http://localhost:5000/",{
+    //   product :
+    // }).then((res)=>{
+    //   setPredictedPrice(res.)
+    //   console.log(res);
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
   };
 
   const handleImageChange = (e) => {
@@ -303,7 +313,6 @@ export default function ProfilePage() {
     });
   };
 
-
   const [isAssign, setIsAssign] = useState(false); //is Unassigned button clicked
   const [unAssignProduct, setUnAssignProduct] = useState([]); //list of items to be assigned to trucker for disptach from farm
   const [toBeAssignedList, setToBeAssignedList] = useState([]); //list of items to be assigned to specific trucker
@@ -315,12 +324,11 @@ export default function ProfilePage() {
   const [checkCountUnassigned, setCheckCountUnassigned] = useState(0);
 
   const [checkCountAgrotech, setCheckCountAgrotech] = useState(0);
-  const [checkCountAgrotechDispatch, setCheckCountAgrotechDispatch] = useState(0);
+  const [checkCountAgrotechDispatch, setCheckCountAgrotechDispatch] =
+    useState(0);
   const [checkCountDelivered, setCheckCountDelivered] = useState(0);
-  const [isAssignProducts, setAssignProduct] = useState(true)
-  const handleAssignProduct = () => {
-
-  }
+  const [isAssignProducts, setAssignProduct] = useState(true);
+  const handleAssignProduct = () => {};
 
   //fetching unassigned list of product (i.e, just bought by customers)
   const handleUnAssignProduct = () => {
@@ -419,11 +427,11 @@ export default function ProfilePage() {
     formData.append("image", profileImage);
 
     axios.post("http://localhost:8000/...", formData, {
-      headers : {
-        authorization : `${localStorage.getItem('accessToken')}`
-      }
-    })
-  }
+      headers: {
+        authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+  };
 
   return (
     <>
@@ -459,7 +467,9 @@ export default function ProfilePage() {
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}>
                     {/* Add a gray background to the edit icon */}
-                    <div className="bg-gray-500 rounded-full p-2" onClick={handleEditProfile}>
+                    <div
+                      className="bg-gray-500 rounded-full p-2"
+                      onClick={handleEditProfile}>
                       <EditOutlinedIcon className="text-white text-xl" />
                     </div>
                   </div>
@@ -926,25 +936,47 @@ export default function ProfilePage() {
                       })}
                     </div>
                     {clickAssign && (
-                      <div className="fixed z-50 top-0 left-0 w-full h-full flex flex-col  items-center justify-center">
-                        <div className="w-[50%] h-[50%] bg-[#d9d9d9]">
-                          <div>
-                            {availableTrucker.map((trucker, idx) => {
-                              return (
-                                <div
-                                  onClick={() => {
-                                    handleTruckAssign(trucker._id);
-                                  }}>
-                                  <h1>Name : {trucker.name}</h1>
-                                  <h3>Email : {trucker.email}</h3>
-                                </div>
-                              );
-                            })}
-                          </div>
+                      // <div className="fixed z-50 top-0 left-0 w-full h-full flex flex-col  items-center justify-center">
+                      //   <div className="w-[50%] h-[50%] bg-[#d9d9d9]">
+                      //     <div>
+                      //       {availableTrucker.map((trucker, idx) => {
+                      //         return (
+                      //           <div
+                      //             onClick={() => {
+                      //               handleTruckAssign(trucker._id);
+                      //             }}>
+                      //             <h1>Name : {trucker.name}</h1>
+                      //             <h3>Email : {trucker.email}</h3>
+                      //           </div>
+                      //         );
+                      //       })}
+                      //     </div>
+                      //     <button
+                      //       onClick={() => {
+                      //         setClickAssign(false);
+                      //       }}>
+                      //       Cancel
+                      //     </button>
+                      //   </div>
+                      // </div>
+                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                        <div className="bg-white p-4 rounded-lg w-104 h-104">
+                          <h2 className="text-lg font-medium mb-2">
+                            Available Trucker
+                          </h2>
+                          {availableTrucker.map((trucker, idx) => (
+                            <div key={idx} className="m-4 hover:cursor-pointer">
+                              <div className="font-medium">{trucker.name}</div>
+                              <div className="text-gray-600 text-sm">
+                                {trucker.email}
+                              </div>
+                            </div>
+                          ))}
                           <button
                             onClick={() => {
                               setClickAssign(false);
-                            }}>
+                            }}
+                            className=" w-full items-center">
                             Cancel
                           </button>
                         </div>

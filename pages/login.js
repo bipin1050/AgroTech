@@ -50,7 +50,7 @@ const Login = () => {
             swal({
               title: "Logged In",
               icon: "success",
-              timer: 2000
+              timer: 1000
             });
             // auth.setAccessToken(res.data.jwt)
             auth.login(res.data);
