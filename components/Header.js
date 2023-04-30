@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -34,7 +34,7 @@ import Router, { useRouter } from "next/router";
 import en from "../language/english";
 import nep from "../language/nepali";
 import Link from "next/link";
-import { useAuth } from "../Authentication/auth";
+import { AuthContext, useAuth } from "../Authentication/auth";
 
 const Header = () => {
   const router = useRouter();
@@ -113,7 +113,7 @@ const Header = () => {
     router.push("/", "/", { locale: "nep" });
   };
 
-  const auth = useAuth();
+  const { user, isLoading, notificationCount } = useContext(AuthContext);
 
   const handleProfile = () => {
     router.push("/profile");
@@ -204,16 +204,16 @@ const Header = () => {
           </div>
           <div className="flex flex-row gap-5">
             <div>
-              {auth.loggedIn && (
+              {user && (
                 <button onClick={handleNotification}>
-                  <Badge badgeContent={auth.notificationCount} color="secondary" overlap="circular">
+                  <Badge badgeContent={notificationCount} color="secondary" overlap="circular">
                     <NotificationsIcon />
                   </Badge>
                 </button>
               )}
             </div>
             <div>
-              {!auth.loggedIn && (
+              {!user && (
                 <button
                   onClick={() => {
                     Router.push("/login");
@@ -222,14 +222,14 @@ const Header = () => {
                   <span> Login </span>
                 </button>
               )}
-              {auth.loggedIn && (
+              {user && (
                 <button onClick={handleProfile}>
-                  Hi {auth.name.split(' ')[0]}
+                  Hi {user.name.split(' ')[0]}
                 </button>
               )}
             </div>
             <div>
-              {auth.loggedIn && (
+              {user && (
                 <button onClick={() => handleCart()}>
                   <ShoppingCartIcon />
                   Cart

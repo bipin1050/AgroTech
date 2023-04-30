@@ -2,21 +2,24 @@ import axios from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { useAuth } from '../Authentication/auth'
+import { useContext } from 'react'
+import { AuthContext } from '../Authentication/auth'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 
 const Notification = () => {
   
-  const auth = useAuth();
   const router = useRouter();
   
-  useEffect(() => {
-    if (!auth.loggedIn) {
-      router.push("/login");
-    }
-  }, []);
+  const { user, isLoading } = useContext(AuthContext);
 
+  // Redirect the user to the login page if they are not logged in
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!user) {
+    router.push("/login");
+    return null;
+  }
   const [notification, setNotification] = useState();
   const [role, setRole] = useState("")
 
@@ -81,7 +84,7 @@ const Notification = () => {
       </Head>
       <Header />
       <div>
-        {auth.role == "admin" && (
+        {user.role == "admin" && (
           <div className="bg-white flex  flex-col w-1/2 rounded-xl p-10 justify-center py-10">
             <form
               onSubmit={handleblogSubmit}
@@ -113,7 +116,7 @@ const Notification = () => {
             </form>
           </div>
         )}
-        {auth.role !== "admin" && (
+        {user.role !== "admin" && (
           <div className="m-5 flex justify-center">
             <div className="w-[70%] flex flex-col justify-center items-center bg-[#D9D9D9]">
               {myNotification.map((notification, idx) => {

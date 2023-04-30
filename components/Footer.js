@@ -1,13 +1,11 @@
 import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { useAuth } from "../Authentication/auth";
 
 import en from "../language/english";
 import nep from "../language/nepali";
 
 const Footer = () => {
   const router = useRouter();
-  const auth = useAuth();
 
   const { locale } = router;
   const t = locale === "en" ? en : nep;

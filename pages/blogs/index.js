@@ -3,7 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { userAgent } from "next/server";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../Authentication/auth";
+import { useContext } from "react";
+import { AuthContext, useAuth } from "../../Authentication/auth";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
@@ -22,11 +23,19 @@ const Blogs = () => {
       });
   }, []);
 
-  const auth = useAuth();
+  const { user, isLoading } = useContext(AuthContext);
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!user) {
+    router.push("/login");
+    return null;
+  }
+  
   const router = useRouter();
 
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState(auth.name);
+  const [author, setAuthor] = useState(user.name);
   const [paragraphs, setParagraphs] = useState({});
   const [image, setImage] = useState("");
 
@@ -112,7 +121,7 @@ const Blogs = () => {
       </Head>
       <Header />
       <div className="flex flex-col items-center w-11/12 lg:w-4/5 m-5">
-        {auth.role == "admin" && (
+        {user.role == "admin" && (
           <>
             <div className="flex justify-center">
               <form

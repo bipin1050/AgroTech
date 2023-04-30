@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import Loading from "../components/loading";
-import { useAuth } from "./auth";
+// import { useAuth } from "./auth";
 
 
 export const RequireAuth = ({children}) => {
-    const auth = useAuth();
+    // const auth = useAuth();
     const router = useRouter();
     
     // if(!auth.loggedIn){
@@ -14,10 +14,10 @@ export const RequireAuth = ({children}) => {
     //     router.push('/login')
     // }
     
-    if(!auth.loggedIn){
-        router.push('/login')
-        // return <Navigate to="/login" state={{path: location.pathname}}/>  
-    }
+    // if(!auth.loggedIn){
+    //     router.push('/login')
+    //     // return <Navigate to="/login" state={{path: location.pathname}}/>  
+    // }
     return children
 }
  

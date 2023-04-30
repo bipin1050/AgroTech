@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
 import StarSharpIcon from "@mui/icons-material/StarSharp";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
-import { useAuth } from "../../Authentication/auth";
 import Head from "next/head";
 import StarRating from "../../components/rating";
+import { AuthContext } from "../../Authentication/auth";
 
 // const [product, setProduct] = useState([]);
 
@@ -26,7 +26,7 @@ const ProductDetails = () => {
 
   const router = useRouter();
 
-  const auth = useAuth();
+  const { user} = useContext(AuthContext);
 
   const { id } = router.query;
   // console.log(id)
@@ -294,7 +294,7 @@ const ProductDetails = () => {
         <>
           <div>
             <h1>Confirm Your Credentials</h1>
-            <h3>Email : {auth.email}</h3>
+            <h3>Email : {user.email}</h3>
             <h3>Location: Will update on next working days</h3>
           </div>
           <button onClick={handlePlaceOrder}>Place Order</button>

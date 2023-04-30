@@ -4,20 +4,24 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import StarIcon from '@mui/icons-material/Star';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { useAuth } from '../Authentication/auth';
+import { AuthContext } from '../Authentication/auth';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
 
 
 const Cart = () => {
 
-  const auth = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!auth.loggedIn) {
-      router.push("/login");
-    }
-  }, []);
+  const { user, isLoading } = useContext(AuthContext);
+
+  // Redirect the user to the login page if they are not logged in
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!user) {
+    router.push("/login");
+    return null;
+  }
 
     const [cartItems, setCartItems] = useState([]);
 

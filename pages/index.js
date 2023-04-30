@@ -10,7 +10,6 @@ const Home = () => {
           <meta name="description" content="Agro tech - shop fresh here" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
         <main>
           <App/>
         </main>

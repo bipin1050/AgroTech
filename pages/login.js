@@ -1,18 +1,16 @@
-import React, { useState } from 'react'
-import Image from 'next/image';
-import logo from '../assets/img/logo1.png';
-import axios from 'axios';
-import Link from 'next/link'
-import { useRouter } from 'next/router';
-import swal from 'sweetalert';
-import { useAuth} from '../Authentication/auth';
-import { toast } from 'react-toastify';
-import Head from 'next/head';
-
+import React, { useContext, useState } from "react";
+import Image from "next/image";
+import logo from "../assets/img/logo1.png";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import swal from "sweetalert";
+import { AuthContext } from "../Authentication/auth";
+import { toast } from "react-toastify";
+import Head from "next/head";
 
 const Login = () => {
-
-  const auth = useAuth();
+  const { user, isLoading, login } = useContext(AuthContext);
   const router = useRouter();
 
   // console.log(auth)
@@ -21,47 +19,55 @@ const Login = () => {
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
-  }
+  };
   const handlePassword = (e) => {
     setPassword(e.target.value);
-  }
+  };
 
   const handleClearInput = () => {
     setUsername();
     setPassword();
-  }
+  };
 
-  const redirectPath = router.state?.path || "/"
+  const redirectPath = router.state?.path || "/";
   // console.log(redirectPath)
 
-  if(auth.loggedIn){
-      // return <Navigate to = {redirectPath} />
-    router.push('/')
-  }
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log(username, password)
-    axios.post("http://localhost:8000/user/login", {
-            email: username,
-            password: password
-        }).then((res) => {
-            handleClearInput();
-            swal({
-              title: "Logged In",
-              icon: "success",
-              timer: 1000
-            });
-            // auth.setAccessToken(res.data.jwt)
-            auth.login(res.data);
-            console.log(res.data)
-            // console.log(auth.loggedIn, auth.role, auth.username, auth.isLoading)
-            router.push('/');
-            // toast.error("res.response.data.message");
-        }).catch((err) => {
-            console.log(err)
-            toast.error(err.response?.data?.message || err.message)
-        })
+    // axios
+    //   .post("http://localhost:8000/user/login", {
+    //     email: username,
+    //     password: password,
+    //   })
+    //   .then((res) => {
+    //     handleClearInput();
+    //     swal({
+    //       title: "Logged In",
+    //       icon: "success",
+    //       timer: 1000,
+    //     });
+    //     // auth.setAccessToken(res.data.jwt)
+    //     auth.login(res.data);
+    //     console.log(res.data);
+    //     // console.log(auth.loggedIn, auth.role, auth.username, auth.isLoading)
+    //     router.push("/");
+    //     // toast.error("res.response.data.message");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     toast.error(err.response?.data?.message || err.message);
+    //   });
+    await login(username, password);
+  };
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (user) {
+    router.push("/");
+    return null;
   }
 
   return (
@@ -82,7 +88,9 @@ const Login = () => {
         </label>
         <input
           type="text"
-          onChange={handleUsername}
+          // onChange={handleUsername}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         />
         <label className="font-semibold text-sm text-gray-600 pb-1 block">
@@ -90,7 +98,9 @@ const Login = () => {
         </label>
         <input
           type="password"
-          onChange={handlePassword}
+          // onChange={handlePassword}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         />
         <button
@@ -109,6 +119,6 @@ const Login = () => {
       </form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
