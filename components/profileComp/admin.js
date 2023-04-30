@@ -43,20 +43,8 @@ const AdminPage = () => {
   ]);
 
   const [products, setProducts] = useState(null);
-  //const [unAssignedProducts, setUnAssignedProducts] = useState(null);
-  // const [assignedProducts, setAssignedProducts] = useState(null);
-  // const [dispatchedFarmProducts, setDispatchedFarmProducts] = useState(null);
-  // const [agrotechProducts, setAgroTechProducts] = useState(null);
-  // const [dispatchedAgrotechProducts, setDispatchedAgrotechProducts] =
-  //   useState(null);
-  // const [deliveredProducts, setDeliveredProducts] = useState(null);
 
   const handleTaskClick = (callPoint, itemKey) => {
-    // if (itemKey == "unAssignedProducts") {
-    //   getProducts("seeProductStatus");
-    // } else if (itemKey == "viewHistory") {
-    //   getProductsHistory();
-    // }
 
     //reset the value
 
