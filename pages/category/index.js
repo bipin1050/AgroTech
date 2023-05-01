@@ -48,11 +48,12 @@ const ProductByCategory = () => {
       </Head>
       <Header />
       <div>
-        <div className="top-div flex flex-row justify-around">
+        <div className="top-div flex flex-row justify-around py-2 bg-gray-100 shadow-[0px_1px_6px_1px_rgba(0,0,0,0.35)] sticky top-32 z-[1000]">
           {categoryList.map((item, idx) => {
             return (
               <div
-                className="pt-2"
+                key={idx}
+                className="text-lg font-medium text-gray-700 px-3 rounded-lg hover:bg-gray-200 cursor-pointer"
                 onClick={() => {
                   handleCategory(item.name);
                 }}>
@@ -61,6 +62,7 @@ const ProductByCategory = () => {
             );
           })}
         </div>
+
         <div className="flex flex-wrap justify-around gap-5 w-full my-5 p-5 bg-primary rounded-md overflow-hidden">
           {productByCategory.map((product, idx) => {
             return (
@@ -98,6 +100,13 @@ const ProductByCategory = () => {
               </div>
             );
           })}
+          {productByCategory.length === 0 && (
+            <div className="text-center my-4">
+              <p className="text-lg font-medium text-gray-700">
+                Sorry, no products found.
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <Footer />

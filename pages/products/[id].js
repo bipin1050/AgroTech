@@ -22,11 +22,7 @@ const ProductDetails = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const [readyBuy, setReadyBuy] = useState(false);
-
   const router = useRouter();
-
-  const { user} = useContext(AuthContext);
 
   const { id } = router.query;
   // console.log(id)
@@ -80,24 +76,15 @@ const ProductDetails = () => {
         console.log(err);
       });
   };
-
-  const handlePlaceOrder = () => {
-    if (confirm("Are you sure want to buy the Product") == true) {
-      axios
-        .post("http://localhost:8000/plans/buyProduct", {
-          headers: {
-            authorization: `${localStorage.getItem("accessToken")}`,
-          },
-          productid: id,
-          number: quantity,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+  const initiateBuy = () => {
+    router.push({
+      pathname: `/buy/${id}`,
+      query: {
+        id: id,
+        quantity: quantity,
+        name : product.name
+      },
+    });
   };
 
   const [rating, setRating] = useState(0);
@@ -133,50 +120,6 @@ const ProductDetails = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      {/* <div className="flex justify-around w-[90%]">
-        <div>
-          <div className="flex justify-around">
-            <div>Image</div>
-            <div className="block flex flex-col ">
-              <span>{product.name}</span>
-              <span>
-                <StarRating count={product.ratingsAverage} />
-              </span>
-              <span>
-                Rs. {(product.price * (100 - product.discount)) / 100} per unit
-              </span>
-              <span className="flex flex-row text-gray-400">
-                <p className="line-through">{product.price}</p>
-                <p className="px-2">-{product.discount}%</p>
-              </span>
-              <span>
-                Quantity :
-                <button onClick={handleSubQuantity}>
-                  <IndeterminateCheckBoxIcon style={{ color: "gray" }} />
-                </button>
-                {quantity}
-                <button onClick={handleAddQuantity}>
-                  <AddBoxIcon style={{ color: "gray" }} />
-                </button>
-              </span>
-              <span>
-                <button
-                  onClick={() => {
-                    setReadyBuy(true);
-                  }}
-                  className="bg-[#FF5732] w-48 p-2 mx-1 focus:opacity-[0.6]">
-                  Buy Now
-                </button>
-                <button
-                  onClick={handleAddCart}
-                  className="bg-[#2B7100] w-48 p-2 mx-1">
-                  Add to Cart
-                </button>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row -mx-4">
           <div className="md:w-2/5 px-4">
@@ -192,7 +135,7 @@ const ProductDetails = () => {
               <StarRating count={product.ratingsAverage} />
             </div>
             <p className="text-gray-700 text-2xl font-semibold mb-4">
-              Rs. {(product.price * (100 - product.discount)) / 100} /{" "}
+              Rs. {Math.ceil((product.price * (100 - product.discount)) / 100)} /{" "}
               {product.unit}
             </p>
             {product.discount > 0 && (
@@ -218,7 +161,7 @@ const ProductDetails = () => {
             </button>
             <button
               onClick={() => {
-                setReadyBuy(true);
+                initiateBuy();
               }}
               className="bg-[#FF5732] w-48 text-white mx-2 py-2 px-6 shadow-md hover:bg-yellow-600 transition duration-300 ease-in-out mb-4">
               Buy Now
@@ -290,16 +233,6 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      {readyBuy && (
-        <>
-          <div>
-            <h1>Confirm Your Credentials</h1>
-            <h3>Email : {user.email}</h3>
-            <h3>Location: Will update on next working days</h3>
-          </div>
-          <button onClick={handlePlaceOrder}>Place Order</button>
-        </>
-      )}
       {/* <div>Related Products</div> */}
       <Footer />
     </div>

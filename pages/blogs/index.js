@@ -120,7 +120,7 @@ const Blogs = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="flex flex-col items-center w-11/12 lg:w-4/5 m-5">
+      <div className="flex flex-col items-center m-5">
         {user.role == "admin" && (
           <>
             <div className="flex justify-center">

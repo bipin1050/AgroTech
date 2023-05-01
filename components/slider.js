@@ -5,7 +5,7 @@ import products from '../constants/Products';
 
 const ImageSlider = () => {
     return (
-        <div className='w-3/4  h-[400px] bg-primary rounded-2xl'>
+        <div className='w-3/4  h-[400px]  rounded-2xl'>
         <Carousel 
             showArrows={true}
             showThumbs={false}
@@ -17,14 +17,14 @@ const ImageSlider = () => {
             useKeyboardArrows={false}
             emulateTouch={false}
            
-            className={'custom-class w-full h-[400px] '}>
+            className={'custom-class w-full h-[400px] bg-gray-300 rounded-xl'}>
                 {products.map((product,idx) => {
                     return (
                       <div key={idx} className="h-2/3">
                         <img
                           src={product.img}
-                          className="h-[400px] rounded-2xl"
-                          style={{ width: "auto" }}
+                          className="h-[400px]"
+                          style={{ width: "94%" }}
                           alt="image1"
                         />
                       </div>

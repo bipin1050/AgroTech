@@ -46,7 +46,12 @@ const Products = () => {
 
   return (
     <>
-      <div className="flex flex-wrap justify-around gap-5 w-full my-5 p-5 bg-primary rounded-md overflow-hidden">
+      <div className="pt-6 pb-1">
+        <label className="font-medium text-xl text-gray-800">
+          Just For You
+        </label>
+      </div>
+      <div className="flex flex-wrap justify-around gap-5 w-full mb-5 p-5 bg-gray-100 shadow-[0px_1px_6px_1px_rgba(0,0,0,0.35)] rounded-md overflow-hidden">
         {products.map((product, idx) => {
           return (
             <div
@@ -54,7 +59,7 @@ const Products = () => {
               onClick={() => {
                 handleProductDetails(product._id);
               }}
-              className="flex flex-wrap w-[18%] justify-center relative rounded-md bg-[#EFEFEF] transition ease-in-out delay-350 hover:shadow-[0px_1px_3px_1px_rgba(0,0,0,0.65)] py-2">
+              className="flex flex-wrap w-[18%] justify-center relative rounded-md bg-white shadow-[0px_1px_6px_1px_rgba(0,0,0,0.15)] transition ease-in-out delay-350 hover:shadow-[0px_1px_3px_1px_rgba(0,0,0,0.65)] py-2">
               <div className="p-1 w-full">
                 <img
                   className="block object-cover object-center rounded-lg h-[150px] w-full"
@@ -69,7 +74,8 @@ const Products = () => {
                   <StarSharpIcon style={{ color: "yellow" }} />
                 </div> */}
                 <p className="text-md font-light">
-                  Rs. {(product.price * (100 - product.discount)) / 100} / {product.unit}
+                  Rs. {Math.ceil((product.price * (100 - product.discount)) / 100)} /{" "}
+                  {product.unit}
                 </p>
                 {product.discount > 0 && (
                   <div className="flex flex-row text-gray-400">
@@ -82,6 +88,13 @@ const Products = () => {
             </div>
           );
         })}
+        {products.length === 0 && (
+          <div className="text-center my-4">
+            <p className="text-lg font-medium text-gray-700">
+              Sorry, no products found.
+            </p>
+          </div>
+        )}
       </div>
       <div>
         {pageNo !== 0 && (

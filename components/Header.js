@@ -22,10 +22,14 @@ import LoginIcon from "@mui/icons-material/Login";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import CallIcon from "@mui/icons-material/Call";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 // import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 import Image from "next/image";
 import logo from "../assets/img/logo.png";
+import nepal from "../assets/img/nepal.png";
+import english from "../assets/img/english.png";
 
 //importing next useRouter class
 import Router, { useRouter } from "next/router";
@@ -131,22 +135,79 @@ const Header = () => {
   return (
     // setMenuFalse is triggered if anything is clicked and closes the sidebar if it is currently opened
     <div
+      className="header shadow-[0_19px_6px_-15px_rgba(0,0,0,0.4)]"
       onClick={() => {
         setMenuFalse();
       }}>
-      <div className="nav-container">
-        {/* div to show hamburger icon if the media size is mobile equivalent */}
-        {/* <div className='hamburger-icon' onClick={()=>{toggleMenuClick()}}>
-                {menuStyle==="menu1" && <ListItem button><MenuIcon fontSize='large' className='menu-icon'/></ListItem>}
-                {menuStyle==="menu2" && <ListItem button><ArrowCircleLeftIcon fontSize='large' className='menu-icon'/></ListItem>}
-            </div> */}
+      <div class="flex justify-between items-center p-2 bg-gray-100 border-b border-gray-500 ">
+        <div class="flex items-center">
+          <div class="flex items-center mr-4">
+            <CallIcon />
+            <p class="text-gray-700">9863490911</p>
+          </div>
+          <div class="flex items-center">
+            <MailOutlineIcon />
+            <p class="text-gray-700 ml-4">info@agrotech.com</p>
+          </div>
+        </div>
+        <div className="flex">
+          <div>
+            {user && (
+              <button onClick={handleNotification}>
+                <Badge
+                  badgeContent={notificationCount}
+                  color="secondary"
+                  overlap="circular">
+                  <NotificationsIcon />
+                </Badge>
+              </button>
+            )}
+          </div>
+          <div className="pr-2">
+            {!user && (
+              <button
+                className="px-3"
+                onClick={() => {
+                  Router.push("/login");
+                }}>
+                <PermIdentityOutlinedIcon />
+                <span> Login </span>
+              </button>
+            )}
+            {user && (
+              <div>
+                <button className="px-3" onClick={handleProfile}>
+                  Hi {user.name.split(" ")[0]}
+                </button>
+                <button onClick={() => handleCart()}>
+                  <ShoppingCartIcon />
+                  Cart
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="flex px-2">
+            {router.locale == "nep" && (
+              <button onClick={() => handleEnglish()}>
+                <img src={english.src} width={20} />
+              </button>
+            )}
+            {router.locale == "en" && (
+              <button onClick={() => handleNepali()}>
+                <img src={nepal.src} width={20} />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
 
-        <div className="logo-section">
-          {/* {t.title} */}
+      {/* div below this should be sticky for top-0 */}
+      <div className="nav-container bg-gray-100 border-b border-gray-500 z-[1000]">
+        <div className="flex flex-col item-center">
           <Image
             src={logo}
-            width={100}
-            height={96}
+            width={90}
+            height={87}
             onClick={() => {
               Router.push("/");
             }}
@@ -158,84 +219,19 @@ const Header = () => {
               return (
                 <ListItem
                   key={idx}
-                  button
                   onClick={() => {
                     handleMenuClick(nav.path);
                   }}
-                  // style={ router.pathname===nav.path ? { background: "#ffffff"} : {}}
                   id={
                     router.pathname === nav.path
                       ? "active-item"
                       : "inactive-item"
                   }
-                  className="nav-items">
-                  {/* <ListItemIcon className='-mr-6 p-0 text-white'>
-                                    {nav.icon}
-                                </ListItemIcon> */}
+                  className="nav-items hover:cursor-pointer">
                   <ListItemText primary={nav.name} />
                 </ListItem>
               );
             })}
-          </div>
-        </div>
-        {/* <div className={menuStyle}>
-                {menuItems.map((nav,idx) => {
-                    return(
-                        <ListItem 
-                            key = {idx}
-                            button
-                            onClick={()=> {handleMenuClick(nav.path)}}
-                            // style={ location.pathname===nav.path ? { background: "#2d2d2e"} : {}}
-                            className="nav-items"
-                        >
-                            <ListItemIcon className=' text-white'>
-                                {nav.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={nav.name}/>
-                        </ListItem>
-                    )
-                })}
-            </div> */}
-        <div className="flex flex-col">
-          <div className="language flex py-3">
-            <button onClick={() => handleEnglish()}>English</button>
-            <span>/</span>
-            <button onClick={() => handleNepali()}>नेपाली</button>
-          </div>
-          <div className="flex flex-row gap-5">
-            <div>
-              {user && (
-                <button onClick={handleNotification}>
-                  <Badge badgeContent={notificationCount} color="secondary" overlap="circular">
-                    <NotificationsIcon />
-                  </Badge>
-                </button>
-              )}
-            </div>
-            <div>
-              {!user && (
-                <button
-                  onClick={() => {
-                    Router.push("/login");
-                  }}>
-                  <PermIdentityOutlinedIcon />
-                  <span> Login </span>
-                </button>
-              )}
-              {user && (
-                <button onClick={handleProfile}>
-                  Hi {user.name.split(' ')[0]}
-                </button>
-              )}
-            </div>
-            <div>
-              {user && (
-                <button onClick={() => handleCart()}>
-                  <ShoppingCartIcon />
-                  Cart
-                </button>
-              )}
-            </div>
           </div>
         </div>
       </div>

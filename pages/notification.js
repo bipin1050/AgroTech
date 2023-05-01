@@ -85,26 +85,24 @@ const Notification = () => {
       <Header />
       <div>
         {user.role == "admin" && (
-          <div className="bg-white flex  flex-col w-1/2 rounded-xl p-10 justify-center py-10">
+          <div className="bg-white mx-auto rounded-xl p-10 w-1/2">
             <form
               onSubmit={handleblogSubmit}
-              className="flex flex-col gap-5 justify-start items-start w-11/12">
-              <div className="flex flex-col lg:flex-row  w-full">
+              className="flex flex-col gap-5 items-start justify-start w-11/12">
+              <div className="flex flex-col lg:flex-row w-full">
                 <label className="w-1/3">Title</label>
                 <input
-                  placeholder="Enter Notification"
                   type="text"
-                  value={notification}
-                  // onChange={handleNotification}
-                  onChange={(e) => setNotification(e.target.value)}
                   name="title"
+                  value={notification}
+                  onChange={(e) => setNotification(e.target.value)}
+                  placeholder="Enter Notification"
                 />
               </div>
               <select
-                // id="defValue"
-                onChange={(e) => setRole(e.target.value)}
                 defaultValue={"DEFAULT"}
-                className="  border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full">
+                className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg"
+                onChange={(e) => setRole(e.target.value)}>
                 <option value="DEFAULT" disabled>
                   Select Receiver
                 </option>
@@ -112,7 +110,11 @@ const Notification = () => {
                 <option>farmer</option>
                 <option>trucker</option>
               </select>
-              <button type="submit">Send Notification</button>
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Send Notification
+              </button>
             </form>
           </div>
         )}
@@ -126,6 +128,11 @@ const Notification = () => {
                   </div>
                 );
               })}
+              {myNotification.length == 0 && (
+                <div className="w-[90%] p-[5px] m-[3px] rounded-md flex justify-center hover:bg-[#c9c9c9] cursor-pointerz">
+                  <p className="">No Notification found</p>
+                </div>
+              )}
             </div>
           </div>
         )}

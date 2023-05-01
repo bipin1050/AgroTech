@@ -45,7 +45,6 @@ const AdminPage = () => {
   const [products, setProducts] = useState(null);
 
   const handleTaskClick = (callPoint, itemKey) => {
-
     //reset the value
 
     setCheckCount(0);
@@ -200,64 +199,67 @@ const AdminPage = () => {
         {menuItems.map((item, id) => (
           <span
             key={id}
-            className="mx-4"
+            className={`px-4 py-2 rounded-md text-center hover:cursor-pointer ${
+              item.state
+                ? "bg-gray-400 text-white"
+                : "bg-gray-100 text-gray-700"
+            } ${id !== menuItems.length - 1 ? "mr-4" : ""}`}
             onClick={() => handleTaskClick(item.callPoint, item.key)}>
-            <span className="text-gray-700 hover:text-gray-900">
-              {item.name}
-            </span>
+            <span className="">{item.name}</span>
           </span>
         ))}
       </div>
-
       {/* Unassigned Product */}
       {menuItems[0].state &&
         (!products ? (
           <div>Loading...</div>
         ) : (
           <>
-            <table className="w-full box-shadow divide-y divide-gray-200 border border-gray-200">
-              <thead>
-                <tr
-                  className=" text-white"
-                  style={{ backgroundColor: "#3E9B05" }}>
-                  <th className="p-2 text-left">Select</th>
-                  <th className="p-2 text-left">S.N.</th>
-                  <th className="p-2 text-left">Name</th>
-                  <th className="p-2 text-left">Quantity</th>
-                  <th className="p-2 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {products.map((product, idx) => {
-                  return (
-                    <tr key={idx}>
-                      <td className="p-2">
-                        <input
-                          type={"checkbox"}
-                          // className="text-[#3E9B05]"
-                          style={{ accentColor: "#3E9B05" }}
-                          onChange={handleProductAssign}
-                          value={product._id}
-                        />
-                      </td>
-                      <td className="p-2">{idx + 1}</td>
-                      <td className="p-2">{product.productname}</td>
-                      <td className="p-2">{product.quantity}</td>
-                      <td className="p-2">{product.status}</td>
-                    </tr>
-                  );
-                })}
-                {!products.length && (
-                  <tr>
-                    <td className="p-2" colSpan={7}>
-                      <p className="text-sm text-center text-gray-500">
-                        No records found
-                      </p>
-                    </td>
+            <div className="self-center justify-center p-10 items-center w-full">
+              <table className="w-full box-shadow divide-y divide-gray-200 border border-gray-200">
+                <thead>
+                  <tr
+                    className=" text-white"
+                    style={{ backgroundColor: "#3E9B05" }}>
+                    <th className="p-2 text-left">Select</th>
+                    <th className="p-2 text-left">S.N.</th>
+                    <th className="p-2 text-left">Name</th>
+                    <th className="p-2 text-left">Quantity</th>
+                    <th className="p-2 text-left">Status</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {products.map((product, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <td className="p-2">
+                          <input
+                            type={"checkbox"}
+                            // className="text-[#3E9B05]"
+                            style={{ accentColor: "#3E9B05" }}
+                            onChange={handleProductAssign}
+                            value={product._id}
+                          />
+                        </td>
+                        <td className="p-2">{idx + 1}</td>
+                        <td className="p-2">{product.productname}</td>
+                        <td className="p-2">{product.quantity}</td>
+                        <td className="p-2">{product.status}</td>
+                      </tr>
+                    );
+                  })}
+                  {!products.length && (
+                    <tr>
+                      <td className="p-2" colSpan={7}>
+                        <p className="text-sm text-center text-gray-500">
+                          No records found
+                        </p>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
             {products.length > 0 && (
               <button
                 className={`bg-blue-500 text-white py-2 px-4 mt-2 rounded-md ${
@@ -515,23 +517,24 @@ const AdminPage = () => {
           <div>Loading...</div>
         ) : (
           <>
-            <table className="w-full box-shadow divide-y divide-gray-200 border border-gray-200">
-              <thead>
-                <tr
-                  className=" text-white"
-                  style={{ backgroundColor: "#3E9B05" }}>
-                  {/* <th className="p-2 text-left">Select</th> */}
-                  <th className="p-2 text-left">S.N.</th>
-                  <th className="p-2 text-left">Name</th>
-                  <th className="p-2 text-left">Quantity</th>
-                  <th className="p-2 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {products.map((product, idx) => {
-                  return (
-                    <tr key={idx}>
-                      {/* <td className="p-2">
+            <div className="self-center justify-center p-10 items-center w-full">
+              <table className="w-full box-shadow divide-y divide-gray-200 border border-gray-200">
+                <thead>
+                  <tr
+                    className=" text-white"
+                    style={{ backgroundColor: "#3E9B05" }}>
+                    {/* <th className="p-2 text-left">Select</th> */}
+                    <th className="p-2 text-left">S.N.</th>
+                    <th className="p-2 text-left">Name</th>
+                    <th className="p-2 text-left">Quantity</th>
+                    <th className="p-2 text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {products.map((product, idx) => {
+                    return (
+                      <tr key={idx}>
+                        {/* <td className="p-2">
                         <input
                           type={"checkbox"}
                           // className="text-[#3E9B05]"
@@ -540,24 +543,25 @@ const AdminPage = () => {
                           value={product._id}
                         />
                       </td> */}
-                      <td className="p-2">{idx + 1}</td>
-                      <td className="p-2">{product.productname}</td>
-                      <td className="p-2">{product.quantity}</td>
-                      <td className="p-2">{product.status}</td>
+                        <td className="p-2">{idx + 1}</td>
+                        <td className="p-2">{product.productname}</td>
+                        <td className="p-2">{product.quantity}</td>
+                        <td className="p-2">{product.status}</td>
+                      </tr>
+                    );
+                  })}
+                  {!products.length && (
+                    <tr>
+                      <td className="p-2" colSpan={7}>
+                        <p className="text-sm text-center text-gray-500">
+                          No records found
+                        </p>
+                      </td>
                     </tr>
-                  );
-                })}
-                {!products.length && (
-                  <tr>
-                    <td className="p-2" colSpan={7}>
-                      <p className="text-sm text-center text-gray-500">
-                        No records found
-                      </p>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
             {clickAssign && (
               <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
                 <div className="bg-white p-4 rounded-lg w-104 h-104">
@@ -596,23 +600,24 @@ const AdminPage = () => {
           <div>Loading...</div>
         ) : (
           <>
-            <table className="w-full box-shadow divide-y divide-gray-200 border border-gray-200">
-              <thead>
-                <tr
-                  className=" text-white"
-                  style={{ backgroundColor: "#3E9B05" }}>
-                  {/* <th className="p-2 text-left">Select</th> */}
-                  <th className="p-2 text-left">S.N.</th>
-                  <th className="p-2 text-left">Name</th>
-                  <th className="p-2 text-left">Quantity</th>
-                  <th className="p-2 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {products.map((product, idx) => {
-                  return (
-                    <tr key={idx}>
-                      {/* <td className="p-2">
+            <div className="self-center justify-center p-10 items-center w-full">
+              <table className="w-full box-shadow divide-y divide-gray-200 border border-gray-200">
+                <thead>
+                  <tr
+                    className=" text-white"
+                    style={{ backgroundColor: "#3E9B05" }}>
+                    {/* <th className="p-2 text-left">Select</th> */}
+                    <th className="p-2 text-left">S.N.</th>
+                    <th className="p-2 text-left">Name</th>
+                    <th className="p-2 text-left">Quantity</th>
+                    <th className="p-2 text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {products.map((product, idx) => {
+                    return (
+                      <tr key={idx}>
+                        {/* <td className="p-2">
                         <input
                           type={"checkbox"}
                           // className="text-[#3E9B05]"
@@ -621,24 +626,25 @@ const AdminPage = () => {
                           value={product._id}
                         />
                       </td> */}
-                      <td className="p-2">{idx + 1}</td>
-                      <td className="p-2">{product.productname}</td>
-                      <td className="p-2">{product.quantity}</td>
-                      <td className="p-2">{product.status}</td>
+                        <td className="p-2">{idx + 1}</td>
+                        <td className="p-2">{product.productname}</td>
+                        <td className="p-2">{product.quantity}</td>
+                        <td className="p-2">{product.status}</td>
+                      </tr>
+                    );
+                  })}
+                  {!products.length && (
+                    <tr>
+                      <td className="p-2" colSpan={7}>
+                        <p className="text-sm text-center text-gray-500">
+                          No records found
+                        </p>
+                      </td>
                     </tr>
-                  );
-                })}
-                {!products.length && (
-                  <tr>
-                    <td className="p-2" colSpan={7}>
-                      <p className="text-sm text-center text-gray-500">
-                        No records found
-                      </p>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </>
         ))}
     </div>

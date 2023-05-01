@@ -52,19 +52,23 @@ const UserPage = () => {
 
   return (
     <div className="flex flex-col justify-center mt-4 w-4/5">
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         {menuItems.map((item, id) => (
           <span
             key={id}
-            className="mx-4"
+            className={`px-4 py-2 rounded-md hover:cursor-pointer ${
+              item.state
+                ? "bg-gray-400 text-white"
+                : "bg-gray-100 text-gray-700"
+            } ${id !== menuItems.length - 1 ? "mr-4" : ""}`}
             // onClick={() => handleTaskClick(item.key)}
-            >
+          >
             <span className="text-gray-700 hover:text-gray-900">
               {item.name}
             </span>
           </span>
         ))}
-      </div>
+      </div> */}
       <div className="flex justify-center w-full">
         {menuItems[0].state && <ProductHistory myHistory={myHistory} />}
       </div>

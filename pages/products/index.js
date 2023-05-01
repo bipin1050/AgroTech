@@ -34,11 +34,12 @@ const Productpage = () => {
       </Head>
       <Header />
       <div>
-        <div className="top-div flex flex-row justify-around">
+        <div className="top-div flex flex-row justify-around py-2 bg-gray-100 shadow-[0px_1px_6px_1px_rgba(0,0,0,0.35)] sticky top-32 z-[1000]">
           {category.map((item, idx) => {
             return (
               <div
-                className="pt-2"
+                key={idx}
+                className="text-lg font-medium text-gray-700 py-1 rounded-lg hover:bg-gray-200 cursor-pointer"
                 onClick={() => {
                   handleCategory(item.name);
                 }}>
@@ -47,6 +48,7 @@ const Productpage = () => {
             );
           })}
         </div>
+
         <div className="products">
           <Products />
         </div>

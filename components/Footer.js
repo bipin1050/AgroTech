@@ -12,7 +12,7 @@ const Footer = () => {
 
   return (
     <div>
-      <div className="text-black w-full mt-4 p-[2.5%] bg-[#d9d9d9] border-b-[3px] border-[#787881]">
+      <div className="text-black w-full mt-4 px-[5%] py-[2.5%] bg-gray-200 border-b-[3px] border-[#787881]">
         <div className="w-1/2">
           <div>
             <label>Quick Links</label>

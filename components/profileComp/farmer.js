@@ -160,6 +160,7 @@ const FarmerPage = () => {
     description: "",
     image: "",
   });
+  const [predictedPrice, setPredictedPrice] = useState(null);
 
   const handleInputChange = (e) => {
     setNewProduct((prevState) => ({
@@ -172,6 +173,7 @@ const FarmerPage = () => {
       category: null,
       unit: null,
     }));
+    setPredictedPrice(null)
 
     axios
       .post("http://localhost:8000/plans/productHelper", {
@@ -187,6 +189,8 @@ const FarmerPage = () => {
           category: res.data.category.category,
           unit: res.data.category.unit,
         }));
+        console.log(res.data.price)
+        setPredictedPrice(res.data.price)
       })
       .catch((err) => {
         console.log(err);
@@ -275,14 +279,17 @@ const FarmerPage = () => {
         {menuItems.map((item, id) => (
           <span
             key={id}
-            className="mx-4"
+            className={`px-4 py-2 rounded-md hover:cursor-pointer ${
+              item.state
+                ? "bg-gray-400 text-white"
+                : "bg-gray-100 text-gray-700"
+            } ${id !== menuItems.length - 1 ? "mr-4" : ""}`}
             onClick={() => handleTaskClick(item.key)}>
-            <span className="text-gray-700 hover:text-gray-900">
-              {item.name}
-            </span>
+            {item.name}
           </span>
         ))}
       </div>
+
       <div className="flex justify-center w-full">
         {menuItems[0].state && (
           <div className="self-center justify-center p-10 items-center w-full">
@@ -387,6 +394,7 @@ const FarmerPage = () => {
                       className="bg-gray-200 rounded-md w-2/3 "
                     />
                   </div>
+
                   <div className="flex flex-row w-full ">
                     <span className="w-2/5">Discount</span>
                     {/* <span className="w-3/5">{product.discount}%</span> */}
@@ -422,7 +430,7 @@ const FarmerPage = () => {
         )}
 
         {menuItems[1].state && (
-          <div className="bg-white flex  flex-col rounded-xl p-10 justify-center py-10 w-1/2">
+          <div className="bg-white flex  flex-col rounded-xl p-5 m-5 shadow-[0px_1px_6px_1px_rgba(0,0,0,0.35)] justify-center py-10 w-1/2">
             <form
               onSubmit={handleSubmitProduct}
               className="flex flex-col gap-5 justify-start items-start w-11/12">
@@ -488,7 +496,9 @@ const FarmerPage = () => {
                 />
                 {newProduct.category && <label>/{newProduct.unit}</label>}
               </div>
-
+              {newProduct.category && (
+                <div>Predicted Price: {predictedPrice}</div>
+              )}
               <div className="flex flex-col lg:flex-row  w-full">
                 <label className="w-1/3">Quantity</label>
                 <input
