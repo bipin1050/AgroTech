@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const TruckerPage = () => {
+
+  useEffect(() => {
+    handleTruckerHistory();
+  }, []);
+
   //for trucker product assigned list
   const [truckerProduct, setTruckerProduct] = useState(null);
   const handleTruckerHistory = () => {
@@ -14,36 +19,49 @@ const TruckerPage = () => {
         },
       })
       .then((res) => {
-        setTruckerProduct(res.data.data);
+        setTruckerProduct(res.data.data)
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  useEffect(() => {
-    handleTruckerHistory();
-  }, []);
 
   //for trucker change status processing to dispatch
   const handleEditStatus = (id) => {
-    axios.post("http://localhost:8000/status/changeProductStatus", {
-      headers: {
-        authorization: `${localStorage.getItem("accessToken")}`,
-      },
-      statusid: [id],
-      status: "Product dispatched from farmer",
-    });
+    axios
+      .post("http://localhost:8000/status/changeProductStatus", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+        statusid: [id],
+        status: "Product dispatched from farmer",
+      })
+      .then((res) => {
+        console.log(res);
+        handleTruckerHistory();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleEditStatus2 = (id) => {
-    axios.post("http://localhost:8000/status/changeProductStatus", {
-      headers: {
-        authorization: `${localStorage.getItem("accessToken")}`,
-      },
-      statusid: [id],
-      status: "Product delivered",
-    });
+    axios
+      .post("http://localhost:8000/status/changeProductStatus", {
+        headers: {
+          authorization: `${localStorage.getItem("accessToken")}`,
+        },
+        statusid: [id],
+        status: "Product delivered",
+      })
+      .then((res) => {
+        console.log(res);
+        handleTruckerHistory();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="flex flex-col gap-5 items-center w-11/12 lg:w-4/5 m-5">

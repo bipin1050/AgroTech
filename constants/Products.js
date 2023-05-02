@@ -4,7 +4,7 @@ const products = [
     price: 50,
     productRating: 3.8,
     id: 1,
-    img: "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTK8nNyI5PHgrs__CwBhXbsJa_352BaHGG0MTCbKXhj2Zahv-5xIKVMQ9P34yzKWbUCQWaWVXGdZR10lRI",
+    img: "https://m.media-amazon.com/images/I/91NNiDgGvJL._AC_SL1500_.jpg",
   },
   {
     name: "Banda",
@@ -19,6 +19,13 @@ const products = [
     productRating: 3.8,
     id: 1,
     img: "https://urbanbazaar.com.np/wp-content/uploads/2021/04/beans.jpg",
+  },
+  {
+    name: "mixed",
+    price: 50,
+    productRating: 3.8,
+    id: 1,
+    img: "https://thumbs.dreamstime.com/b/assortment-fresh-organic-fruits-vegetables-rainbow-colors-panoramic-food-background-171245196.jpg",
   },
   {
     name: "Banda",

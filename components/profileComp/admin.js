@@ -141,6 +141,7 @@ const AdminPage = () => {
         setClickAssign(false);
         setCheckCount(0);
         toast("Items assigned successfully");
+        getProducts("seeProductStatus")
       })
       .catch((err) => {
         console.log(err);
@@ -164,6 +165,7 @@ const AdminPage = () => {
         console.log(res);
         setCheckCount(0);
         toast("Items received successfully");
+        getProducts("seeProductDispatchedFromFarmer");
       })
       .catch((err) => {
         console.log(err);
@@ -187,12 +189,14 @@ const AdminPage = () => {
         setClickAssign(false);
         setCheckCount(0);
         toast("Items assigned successfully");
+        getProducts("seeProductInAgrotech");
       })
       .catch((err) => {
         console.log(err);
         setClickAssign(false);
       });
   };
+
   return (
     <div className="flex flex-col gap-5 items-center w-11/12 lg:w-4/5 m-5">
       <div className="flex justify-center">

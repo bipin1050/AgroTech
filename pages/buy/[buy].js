@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useRouter } from "next/router";
 import { WindowSharp } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const Buy = () => {
   const [mode, setMode] = useState(null);
@@ -31,7 +32,9 @@ const Buy = () => {
             mode: mode,
           })
           .then((res) => {
+            toast.success("Order Placed Successfully")
             console.log(res);
+            router.push("/")
           })
           .catch((err) => {
             console.log(err);

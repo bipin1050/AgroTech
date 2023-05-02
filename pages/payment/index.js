@@ -25,10 +25,10 @@ const PaymentConfirmation = () => {
   //   const [transaction, setTransaction] = useState(null);
   const router = useRouter();
 
-  const { productid, number } = router.query;
+  const { productid, number, pidx } = router.query;
   
 
-console.log( productid, number);
+console.log( productid, number, pidx);
 
   useEffect(() => {
     // if (pidx) {
@@ -38,7 +38,7 @@ console.log( productid, number);
             authorization: `${localStorage.getItem("accessToken")}`,
           },
           productid: productid,
-          quantity: number,
+          number: number,
           mode: 1,
         })
         .then((response) => {
@@ -83,7 +83,7 @@ console.log( productid, number);
               </h1>
               <p>Thank you for your purchase.</p>
               <div className="bg-green-500 text-white mt-6 py-3 px-6 rounded-lg inline-block">
-                <p className="font-semibold">Transaction ID:</p>
+                <p className="font-semibold hover:cursor-pointer" onClick={()=>{router.push("/")}}>Back to Home</p>
                 <p className="font-bold">{pidx}</p>
               </div>
             </div>

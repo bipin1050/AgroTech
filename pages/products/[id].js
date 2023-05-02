@@ -10,6 +10,7 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import Head from "next/head";
 import StarRating from "../../components/rating";
 import { AuthContext } from "../../Authentication/auth";
+import { toast } from "react-toastify";
 
 // const [product, setProduct] = useState([]);
 
@@ -25,6 +26,8 @@ const ProductDetails = () => {
   const router = useRouter();
 
   const { id } = router.query;
+
+  const { user } = useContext(AuthContext);
   // console.log(id)
   // console.log(router.query.id)
   useEffect(() => {
@@ -70,13 +73,24 @@ const ProductDetails = () => {
         productid: id,
       })
       .then((res) => {
+        toast("Item added to Cart");
         console.log(res);
       })
       .catch((err) => {
+        //this conditional error display is not efficient method
+        if(err.message == "Network Error"){
+          toast.error(err.message)
+        }else{
+          toast.error("Item Already in Cart")
+        }
         console.log(err);
       });
   };
   const initiateBuy = () => {
+    if(!user){
+      toast.error("Login before Buying")
+      router.push('/login')
+    }
     router.push({
       pathname: `/buy/${id}`,
       query: {
